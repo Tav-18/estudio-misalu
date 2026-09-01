@@ -1,0 +1,17 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Información del proyecto | Estudio de Danza Misalú{% endblock %}
+{% block content %}
+<header class="site-header"><div class="container project-nav"><a class="brand" href="{% url 'core:home' %}"><img src="{% static 'core/img/logo-misalu.png' %}" alt="Logo de Estudio de Danza Misalú"></a><a class="button button-small button-outline" href="{% url 'core:home' %}">← Volver al sitio</a></div></header>
+<main id="contenido">
+<section class="project-hero"><div class="container"><span class="eyebrow">Anexo académico</span><h1>Información empresarial del proyecto</h1><p>Esta página conserva información útil para la entrega académica sin recargar la experiencia principal del visitante.</p></div></section>
+<section class="section"><div class="container academic-grid">
+  <article class="academic-card"><span class="section-kicker">Identidad</span><h2>Estudio de Danza Misalú, S. A. S.</h2><dl class="facts"><div><dt>Giro</dt><dd>Servicios de enseñanza artística y recreativa.</dd></div><div><dt>Target</dt><dd>Personas interesadas en desarrollar habilidades dancísticas.</dd></div><div><dt>Eslogan</dt><dd>“Tu pasión, tu ritmo, tu hogar”.</dd></div><div><dt>Atributos</dt><dd>Creativa, inclusiva, dinámica, accesible e interpersonal.</dd></div></dl></article>
+  <article class="academic-card"><span class="section-kicker">Sociedad mercantil</span><h2>S.A.S.</h2><p>El proyecto plantea una Sociedad por Acciones Simplificada por tratarse de un negocio inicial con pocos socios, responsabilidad limitada por aportaciones y posibilidad de evolucionar la figura conforme crezca el negocio.</p></article>
+</div></section>
+<section class="section section-alt"><div class="container"><div class="section-heading"><span class="section-kicker">Know how</span><h2>Capacidades del proyecto</h2></div><div class="knowhow-grid"><article>Programas de entrenamiento</article><article>Estructura de clases por niveles</article><article>Técnicas pedagógicas</article><article>Procesos de formación y preparación</article><article>Coreografías y material didáctico propio</article><article>Manuales, planes de clase y evaluación</article><article>Página web, redes sociales y contenido digital</article><article>Reconocimiento de la academia</article></div></div></section>
+<section class="section"><div class="container"><div class="section-heading"><span class="section-kicker">Entorno estratégico</span><h2>Análisis PESTEL</h2><p>Resumen visual del análisis incluido en el documento académico.</p></div><div class="pestel-grid">{% for factor in pestel %}<article class="pestel-card"><span class="pestel-letter">{{ factor.letter }}</span><div><h3>{{ factor.title }}</h3><p>{{ factor.text }}</p></div></article>{% endfor %}</div></div></section>
+<section class="section section-alt"><div class="container academic-note"><span class="section-kicker">Decisión UX/UI</span><h2>¿Por qué esta información está separada?</h2><p>El PESTEL, la justificación societaria y parte del know how son importantes para la entrega escolar, pero no forman parte de las tareas principales de un visitante que busca conocer clases, horarios o contacto.</p></div></section>
+</main>
+<footer class="site-footer compact-footer"><div class="container footer-bottom"><span>Estudio de Danza Misalú · Proyecto académico</span><a href="{% url 'core:home' %}">Volver al inicio</a></div></footer>
+{% endblock %}

@@ -1,0 +1,219 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Estudio de Danza Misalú | Tu pasión, tu ritmo, tu hogar{% endblock %}
+{% block content %}
+<header class="site-header" id="inicio">
+  <div class="container nav-wrap">
+    <a class="brand" href="#inicio" aria-label="Ir al inicio"><img src="{% static 'core/img/logo-misalu.png' %}" alt="Logo de Estudio de Danza Misalú"></a>
+    <button class="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="main-nav"><span></span><span></span><span></span></button>
+    <nav id="main-nav" class="main-nav" aria-label="Navegación principal">
+      <a href="#inicio">Inicio</a><a href="#quienes-somos">Quiénes somos</a><a href="#clases">Clases</a>
+      <a href="#horarios">Horarios</a><a href="#organizacion">Organización</a><a href="#galeria">Galería</a><a href="#contacto">Contacto</a>
+    </nav>
+    <a class="button button-small button-outline desktop-cta" href="#contacto">Contáctanos</a>
+  </div>
+</header>
+
+<main id="contenido">
+<section class="hero">
+  <div class="hero-orb hero-orb-a" aria-hidden="true"></div><div class="hero-orb hero-orb-b" aria-hidden="true"></div>
+  <div class="container hero-grid">
+    <div class="hero-copy reveal">
+      <span class="eyebrow">Estudio de Danza Misalú</span>
+      <h1>Tu pasión,<br>tu ritmo,<br><span>tu hogar.</span></h1>
+      <p class="hero-lead">Un espacio creativo, inclusivo y profesional para aprender danza urbana, contemporánea y K-pop, desarrollar confianza y expresarte a través del movimiento.</p>
+      <div class="hero-actions"><a class="button button-primary" href="#clases">Conoce las clases <span>→</span></a><a class="button button-ghost" href="#quienes-somos">Nuestra historia</a></div>
+      <div class="hero-metrics"><div><strong>3</strong><span>estilos principales</span></div><div><strong>Inclusiva</strong><span>una comunidad cercana</span></div><div><strong>Todos</strong><span>los niveles</span></div></div>
+    </div>
+<div class="hero-art reveal">
+    <figure class="hero-photo">
+        <img
+            src="{% static 'core/img/hero-misalu.webp' %}"
+            alt="Grupo de bailarines realizando una coreografía bajo iluminación azul"
+        >
+    </figure>
+</div>
+  </div>
+</section>
+
+<section class="trust-strip"><div class="container trust-grid">
+  <article><span>◈</span><p>Creativa, inclusiva,<br>dinámica y accesible</p></article>
+  <article><span>✦</span><p>Formación, entrenamiento<br>y expresión corporal</p></article>
+  <article><span>◎</span><p>Convivencia, confianza<br>y sentido de pertenencia</p></article>
+</div></section>
+
+<section class="section" id="quienes-somos">
+  <div class="container">
+    <div class="section-heading reveal"><span class="section-kicker">Quiénes somos</span><h2>La danza más cerca de casa.</h2><p>Misalú nace de experiencias personales marcadas por largos traslados, barreras para acceder a espacios artísticos y la búsqueda de una comunidad de baile más humana, cercana e inclusiva.</p></div>
+    <div class="story-grid">
+      <div class="story-visual reveal"><div class="photo-placeholder photo-placeholder-story"><span class="photo-kicker">Historia</span><strong>Foto de fundadores o comunidad</strong><small>Ideal: una imagen auténtica del grupo.</small></div></div>
+      <article class="story-card reveal">
+        <span class="story-label">Nuestra historia</span>
+        <p>Alondra, Sara, Nancy e Iván compartieron de distintas maneras una misma dificultad: acceder a formación dancística cercana, accesible y en un ambiente donde pudieran crecer con confianza.</p>
+        <p>Al coincidir durante su formación en la Facultad de Estudios Superiores Zaragoza, encontraron una motivación común: ayudar a otras personas y compartir su pasión por el baile.</p>
+        <details class="story-details"><summary>Leer la historia completa</summary><div class="story-details-content">
+          <p>Desde pequeña, Alondra mostró una gran pasión por el baile, pero en el municipio donde vivía no encontraba alternativas cercanas. Su primer acercamiento formal implicaba trayectos de varias horas para poder asistir a una clase.</p>
+          <p>Sara también enfrentó largos recorridos y una experiencia inicial en un ambiente poco favorable. Nancy encontró en el baile una forma de expresión, confianza y conexión, pero identificó igualmente la falta de espacios accesibles.</p>
+          <p>Iván, ligado desde tiempo atrás a la música y a la expresión humana, vivió las limitaciones de aprender o practicar desde la periferia por distancias y costos de transporte.</p>
+          <p>De estas experiencias surge Misalú: una propuesta para acercar la danza, adaptarse a las necesidades de su comunidad y demostrar que el talento y las oportunidades artísticas no pertenecen únicamente al centro de la ciudad.</p>
+        </div></details>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="purpose-grid">
+      <article class="purpose-card reveal"><span class="purpose-icon">M</span><span class="section-kicker">Misión</span><h2>Crear un espacio para crecer.</h2><p>Brindar a las personas un espacio creativo, inclusivo y profesional donde desarrollen habilidades dancísticas y compartan su pasión por el baile.</p></article>
+      <article class="purpose-card reveal"><span class="purpose-icon">V</span><span class="section-kicker">Visión</span><h2>Ser un estudio reconocido.</h2><p>Posicionarnos como un estudio de danza reconocido, que destaque por su pasión, accesibilidad, calidad y compromiso con el desarrollo artístico de los bailarines.</p></article>
+    </div>
+    <div class="section-heading values-heading reveal"><span class="section-kicker">Lo que nos guía</span><h2>Nuestros valores</h2></div>
+    <div class="values-grid">{% for value in values %}<article class="value-card reveal"><span class="value-icon">{{ value.icon }}</span><h3>{{ value.title }}</h3><p>{{ value.text }}</p></article>{% endfor %}</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-heading reveal"><span class="section-kicker">Core business</span><h2>Más que aprender pasos.</h2><p>La propuesta central son las clases regulares de danza. Como actividad complementaria, la academia contempla presentaciones y shows de estudiantes para fortalecer experiencia escénica y visibilidad.</p></div>
+    <div class="business-grid">
+      <article class="business-card reveal"><span>01</span><div><h3>Clases regulares</h3><p>Programas dinámicos de formación, entrenamiento y expresión corporal.</p></div></article>
+      <article class="business-card reveal"><span>02</span><div><h3>Presentaciones y shows</h3><p>Experiencias escénicas que permiten mostrar el trabajo de los estudiantes.</p></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="clases">
+  <div class="container">
+    <div class="section-heading reveal"><span class="section-kicker">Descubre tu estilo</span><h2>Nuestras clases</h2><p>Clases presenciales con diferentes niveles y horarios para desarrollar técnica, confianza, expresión corporal y convivencia.</p></div>
+    <div class="class-grid">{% for item in classes %}
+      <article class="class-card reveal class-{{ item.slug }}">
+        <div class="class-photo-slot">
+    <img
+        src="{% static item.image %}"
+        alt="Clase de danza {{ item.name }} en Estudio Misalú"
+        loading="lazy"
+    >
+    <span>{{ item.name }}</span>
+</div>
+        <div class="class-card-top"><span class="class-icon">{{ item.icon }}</span><span class="class-number">0{{ forloop.counter }}</span></div>
+        <p class="class-description">
+    {{ item.description }}
+</p>
+
+<span class="class-tags">
+    {{ item.eyebrow }}
+</span>
+
+<a href="#contacto" class="text-link">
+    Pedir información <span>→</span>
+</a>
+      </article>
+    {% endfor %}</div>
+  </div>
+</section>
+
+<section class="section"><div class="container">
+  <div class="section-heading reveal"><span class="section-kicker">Experiencia Misalú</span><h2>¿Qué encuentra el alumno?</h2></div>
+  <div class="benefit-grid">
+    <article class="mini-card reveal"><span>↗</span><h3>Aprendizaje</h3><p>Aprender y perfeccionar distintos estilos de danza.</p></article>
+    <article class="mini-card reveal"><span>⌁</span><h3>Expresión</h3><p>Desarrollar confianza y expresión corporal.</p></article>
+    <article class="mini-card reveal"><span>✧</span><h3>Bienestar</h3><p>Liberar estrés por medio del movimiento y la práctica.</p></article>
+    <article class="mini-card reveal"><span>◇</span><h3>Pertenencia</h3><p>Encontrar un espacio de convivencia, respeto y comunidad.</p></article>
+  </div>
+</div></section>
+
+<section class="section schedule-section" id="horarios"><div class="container"><div class="schedule-panel reveal">
+  <div class="schedule-copy"><span class="section-kicker">Organiza tu semana</span><h2>Horarios flexibles</h2><p> Encuentra el horario que mejor se adapte a tu rutina
+    y disfruta de nuestras diferentes opciones de clase.</p></div>
+  <div class="schedule-grid">{% for item in schedule %}<article><h3>{{ item.class }}</h3><p>{{ item.days }}</p><strong>{{ item.time }}</strong></article>{% endfor %}</div>
+  <a class="button button-primary" href="#contacto">Solicitar información <span>→</span></a>
+</div></div></section>
+
+<section class="section organization-section" id="organizacion">
+  <div class="container">
+    <div class="section-heading reveal"><span class="section-kicker">Cómo nos organizamos</span><h2>Organigrama</h2><p>Conoce la estructura organizacional que permite coordinar
+    las diferentes áreas de Estudio de Danza Misalú.</p></div>
+    <div class="org-chart reveal">
+      <div class="org-top"><div class="org-node org-node-outline">Asamblea de accionistas</div><div class="org-line-v"></div><div class="org-node org-node-primary">Socios fundadores</div></div>
+      <div class="org-support"><div class="org-node org-node-outline">Representante legal</div><div class="org-node org-node-outline">Recursos Humanos</div></div>
+      <div class="org-branches">
+        <article class="org-branch"><div class="org-node org-node-primary">Dirección académica</div><div class="org-children"><div class="org-node org-node-outline">Profesores de danza</div><div class="org-node org-node-vacancy">Vacante · Docente de Danza</div></div></article>
+        <article class="org-branch"><div class="org-node org-node-primary">Dirección administrativa</div><div class="org-children"><div class="org-node org-node-outline">Tesorería</div><div class="org-node org-node-outline">Contabilidad</div></div></article>
+        <article class="org-branch"><div class="org-node org-node-primary">Dirección de marketing</div><div class="org-children"><div class="org-node org-node-outline">Community manager</div><div class="org-node org-node-outline">Diseño y publicidad</div><div class="org-node org-node-outline">Eventos y presentaciones</div></div></article>
+        <article class="org-branch"><div class="org-node org-node-primary">Dirección de servicios</div><div class="org-children"><div class="org-node org-node-outline">Recepción</div><div class="org-node org-node-outline">Limpieza</div><div class="org-node org-node-outline">Mantenimiento</div></div></article>
+      </div>
+    </div>
+
+    <div class="directory-block reveal" id="directorio">
+      <div><span class="section-kicker">Próxima información</span><h2>Directorio</h2><p>Espacio reservado para nombres, cargos, fotografías y medios de contacto cuando recibamos el directorio definitivo.</p></div>
+      <div class="directory-placeholder-grid"><article><span>01</span><strong>Integrante</strong><small>Cargo por definir</small></article><article><span>02</span><strong>Integrante</strong><small>Cargo por definir</small></article><article><span>03</span><strong>Integrante</strong><small>Cargo por definir</small></article><article><span>04</span><strong>Integrante</strong><small>Cargo por definir</small></article></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt"><div class="container vacancy-panel reveal">
+  <div><span class="section-kicker">Vacante por proyecto</span><h2>Docente de Danza</h2><p>El proyecto contempla integrar a un o una docente para impartir clases y participar en la formación de los alumnos.</p></div>
+  <div class="skill-chips"><span>Programas de entrenamiento</span><span>Clases por niveles</span><span>Técnicas pedagógicas</span><span>Preparación de alumnos</span><span>Coreografías</span><span>Planes de clase</span></div>
+</div></section>
+
+<section class="section" id="galeria"><div class="container">
+  <div class="section-heading reveal"><span class="section-kicker">Movimiento en escena</span><h2>Galería</h2><p>Conoce algunos de los momentos que representan nuestra forma de vivir,
+    aprender y compartir la danza.</p></div>
+<div class="gallery-grid">
+
+    {% for item in gallery %}
+
+    <button
+        class="gallery-tile {{ item.css_class }} reveal"
+        type="button"
+        data-label="{{ item.label }}"
+        aria-label="Ver imagen: {{ item.label }}"
+    >
+
+        <img
+            src="{% static item.image %}"
+            alt="{{ item.alt }}"
+            loading="lazy"
+        >
+
+        <small>{{ item.caption }}</small>
+
+        <span>{{ item.label }}</span>
+
+    </button>
+
+    {% endfor %}
+
+</div>
+</div></section>
+
+<section class="section contact-section" id="contacto"><div class="container contact-grid">
+  <div class="contact-copy reveal"><span class="section-kicker">Contacto</span><h2>Haz que el ritmo empiece aquí.</h2><p>¿Quieres conocer más sobre nuestras clases, horarios o niveles?
+    Escríbenos y con gusto te brindaremos la información que necesitas.</p>
+    <div class="contact-options"><div><span>01</span><p><strong>Correo</strong><br>{{ demo_contact.email }}</p></div><div><span>02</span><p><strong>WhatsApp</strong><br>{{ demo_contact.phone }}</p></div><div><span>03</span><p><strong>Ubicación</strong><br>{{ demo_contact.address }}</p></div></div>
+  </div>
+  <div class="form-card reveal">
+    {% if messages %}{% for message in messages %}<div class="form-success" role="status">{{ message }}</div>{% endfor %}{% endif %}
+    <form method="post" novalidate>{% csrf_token %}
+      <div class="form-row"><div class="field"><label for="{{ form.name.id_for_label }}">Nombre</label>{{ form.name }}{% for error in form.name.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div><div class="field"><label for="{{ form.email.id_for_label }}">Correo</label>{{ form.email }}{% for error in form.email.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div></div>
+      <div class="form-row"><div class="field"><label for="{{ form.phone.id_for_label }}">Teléfono</label>{{ form.phone }}</div><div class="field"><label for="{{ form.interest.id_for_label }}">Me interesa</label>{{ form.interest }}</div></div>
+      <div class="field"><label for="{{ form.message.id_for_label }}">Mensaje</label>{{ form.message }}{% for error in form.message.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>
+      <button class="button button-primary button-full" type="submit">Enviar mensaje <span>→</span></button><p class="form-note">    Tus datos serán utilizados únicamente para responder tu solicitud.
+</p>
+    </form>
+  </div>
+</div></section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div><img class="footer-logo" src="{% static 'core/img/logo-misalu.png' %}" alt="Logo Misalú"><p>Tu pasión, tu ritmo, tu hogar.</p></div>
+    <div><h2>Explora</h2><a href="#quienes-somos">Quiénes somos</a><a href="#clases">Clases</a><a href="#organizacion">Organigrama</a><a href="#directorio">Directorio</a></div>
+    <div><h2>Proyecto académico</h2><a href="{% url 'core:project_info' %}">Información empresarial y PESTEL</a><span>Datos de contacto ficticios</span><span>Django · UX/UI responsive</span></div>
+  </div>
+  <div class="container footer-bottom"><span>© {% now "Y" %} Estudio de Danza Misalú.</span><span>Proyecto académico · Python + Django</span></div>
+</footer>
+
+<dialog class="gallery-dialog" id="gallery-dialog"><button type="button" class="dialog-close" aria-label="Cerrar">×</button><div class="dialog-visual"></div><h2 id="dialog-title">Galería Misalú</h2><p>Este espacio queda preparado para fotografías propias de la academia.</p></dialog>
+{% endblock %}
