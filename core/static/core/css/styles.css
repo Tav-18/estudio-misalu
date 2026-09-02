@@ -1145,3 +1145,215 @@ select:focus-visible {
 .team-photo-alondra img {
     object-position: center 30%;
 }
+/* =========================================================
+   DIRECTORIO
+========================================================= */
+
+.directory-block {
+    margin-top: 72px;
+}
+
+.directory-heading {
+    max-width: 720px;
+    margin-bottom: 40px;
+}
+
+.directory-heading h2 {
+    margin: 10px 0 14px;
+}
+
+.directory-team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 42px;
+}
+
+.directory-team-card {
+    overflow: hidden;
+
+    border-radius: 24px;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    background: rgba(255, 255, 255, 0.03);
+
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.directory-team-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(25, 227, 224, 0.35);
+}
+
+.directory-team-card img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+
+    object-fit: cover;
+    object-position: center;
+
+    display: block;
+}
+
+.directory-team-card div {
+    padding: 20px;
+}
+
+.directory-team-card h3 {
+    margin: 0 0 6px;
+
+    font-size: 1.05rem;
+}
+
+.directory-team-card p {
+    margin: 0;
+
+    color: var(--cyan);
+    font-size: 0.9rem;
+}
+
+
+/* GRUPOS */
+
+.directory-groups {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 22px;
+}
+
+.directory-group {
+    padding: 26px;
+
+    border-radius: 24px;
+
+    border: 1px solid rgba(255, 255, 255, 0.09);
+
+    background:
+        rgba(255, 255, 255, 0.025);
+}
+
+.directory-group-label {
+    display: inline-block;
+
+    margin-bottom: 20px;
+
+    color: var(--cyan);
+
+    font-size: 0.78rem;
+    font-weight: 800;
+
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.directory-list {
+    display: grid;
+    gap: 12px;
+}
+
+.directory-list article {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 14px 0;
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.07);
+}
+
+.directory-list article:last-child {
+    border-bottom: 0;
+}
+
+.directory-list strong {
+    font-size: 0.96rem;
+}
+
+.directory-list span {
+    color: var(--muted);
+
+    font-size: 0.9rem;
+    text-align: right;
+}
+
+
+/* =========================================================
+   RESPONSIVE DIRECTORIO
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .directory-team-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 760px) {
+
+    .directory-groups {
+        grid-template-columns: 1fr;
+    }
+
+    .directory-list article {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 4px;
+    }
+
+    .directory-list span {
+        text-align: left;
+    }
+
+}
+
+@media (max-width: 520px) {
+
+    .directory-team-grid {
+        grid-template-columns: 1fr 1fr;
+
+        gap: 10px;
+    }
+
+    .directory-team-card {
+        border-radius: 18px;
+    }
+
+    .directory-team-card div {
+        padding: 14px;
+    }
+
+    .directory-team-card h3 {
+        font-size: 0.92rem;
+    }
+
+    .directory-team-card p {
+        font-size: 0.8rem;
+    }
+
+}
+/* =========================================================
+   CORRECCIÓN ANCHO GRUPOS DEL DIRECTORIO
+========================================================= */
+
+.directory-groups {
+    grid-column: 1 / -1;
+    width: 100%;
+}
+
+.directory-group {
+    min-width: 0;
+}
