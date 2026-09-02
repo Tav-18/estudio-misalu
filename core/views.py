@@ -81,8 +81,8 @@ PESTEL = [
 
 DEMO_CONTACT = {
     "email": "hola@misalu.example",
-    "phone": "+52 55 0000 0000",
-    "address": "Dirección demostrativa · Ciudad de México",
+    "phone": "+52 55 6480 9377",
+    "address": "Alberto Braniff 202, Aviación Civil, Venustiano Carranza, 15740 Ciudad de México, CDMX",
 }
 
 def _common_context():
@@ -92,7 +92,7 @@ def home(request):
     form = ContactMessageForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
         form.save()
-        messages.success(request, "¡Gracias! Tu mensaje de demostración quedó registrado correctamente.")
+        messages.success(request, "¡Gracias! una persona de nuestro equipo se contactara con usted.")
         return redirect("core:home")
     context = _common_context()
     context["form"] = form

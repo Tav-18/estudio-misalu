@@ -1357,3 +1357,157 @@ select:focus-visible {
 .directory-group {
     min-width: 0;
 }
+/* =========================================================
+   ORGANIGRAMA - RAMAS LATERALES
+========================================================= */
+
+/*
+   Cada dirección funciona como nodo principal.
+   Debajo aparece un tronco vertical del cual
+   salen lateralmente sus diferentes puestos.
+*/
+
+.org-branch {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 0;
+}
+
+
+/* Línea que baja desde la línea general hacia cada dirección */
+
+.org-branch::before {
+    content: "";
+
+    position: absolute;
+
+    top: -18px;
+    left: 50%;
+
+    width: 1px;
+    height: 18px;
+
+    background: rgba(125, 60, 255, 0.55);
+
+    transform: translateX(-50%);
+}
+
+
+/* =========================================================
+   SUBÁRBOL DE CADA DIRECCIÓN
+========================================================= */
+
+.org-subtree {
+    position: relative;
+
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: flex-end;
+
+    gap: 16px;
+
+    margin-top: 18px;
+
+    padding-left: 34px;
+}
+
+
+/*
+   Tronco vertical que nace de la dirección.
+*/
+
+.org-subtree::before {
+    content: "";
+
+    position: absolute;
+
+    top: -18px;
+    bottom: 22px;
+
+    left: 34px;
+
+    width: 1px;
+
+    background: rgba(125, 60, 255, 0.55);
+}
+
+
+/*
+   Cada puesto se coloca a la derecha del tronco.
+*/
+
+.org-subtree-item {
+    position: relative;
+
+    width: calc(100% - 34px);
+
+    display: flex;
+    align-items: center;
+}
+
+
+/*
+   Línea horizontal:
+   tronco → puesto.
+*/
+
+.org-subtree-item::before {
+    content: "";
+
+    position: absolute;
+
+    left: -34px;
+    top: 50%;
+
+    width: 34px;
+    height: 1px;
+
+    background: rgba(125, 60, 255, 0.55);
+}
+
+
+/*
+   Los puestos ocupan el ancho restante.
+*/
+
+.org-subtree-item .org-node {
+    position: relative;
+
+    width: 100%;
+    min-width: 0;
+
+    background-color: #0d0918;
+}
+
+
+/* =========================================================
+   AJUSTES RESPONSIVE DEL ORGANIGRAMA
+========================================================= */
+
+@media (max-width: 720px) {
+
+    .org-subtree {
+        padding-left: 26px;
+    }
+
+    .org-subtree::before {
+        left: 26px;
+    }
+
+    .org-subtree-item {
+        width: calc(100% - 26px);
+    }
+
+    .org-subtree-item::before {
+        left: -26px;
+        width: 26px;
+    }
+
+}
