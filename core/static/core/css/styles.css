@@ -1511,3 +1511,81 @@ select:focus-visible {
     }
 
 }
+/* =========================================================
+   MAPA - CONTACTO
+========================================================= */
+
+.contact-map {
+    margin-top: 32px;
+}
+
+.contact-map-frame {
+    position: relative;
+
+    width: 100%;
+    aspect-ratio: 16 / 10;
+
+    overflow: hidden;
+
+    border-radius: 22px;
+
+    border: 1px solid rgba(255, 255, 255, 0.10);
+
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.contact-map-frame iframe {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    border: 0;
+}
+
+.map-link {
+    width: 100%;
+
+    margin-top: 12px;
+    padding: 14px 18px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    border-radius: 14px;
+
+    border: 1px solid rgba(19, 230, 223, 0.24);
+
+    background: rgba(19, 230, 223, 0.04);
+
+    color: var(--text);
+
+    font-size: 0.9rem;
+    font-weight: 750;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.map-link > span {
+    color: var(--cyan);
+    font-size: 1.15rem;
+}
+
+.map-link strong {
+    margin-left: auto;
+
+    color: var(--pink);
+}
+
+.map-link:hover {
+    transform: translateY(-2px);
+
+    border-color: rgba(19, 230, 223, 0.48);
+
+    background: rgba(19, 230, 223, 0.075);
+}

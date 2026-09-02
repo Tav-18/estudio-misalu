@@ -530,6 +530,32 @@
   <div class="contact-copy reveal"><span class="section-kicker">Contacto</span><h2>Haz que el ritmo empiece aquí.</h2><p>¿Quieres conocer más sobre nuestras clases, horarios o niveles?
     Escríbenos y con gusto te brindaremos la información que necesitas.</p>
     <div class="contact-options"><div><span>01</span><p><strong>Correo</strong><br>{{ demo_contact.email }}</p></div><div><span>02</span><p><strong>WhatsApp</strong><br>{{ demo_contact.phone }}</p></div><div><span>03</span><p><strong>Ubicación</strong><br>{{ demo_contact.address }}</p></div></div>
+    <div class="contact-map">
+
+    <div class="contact-map-frame">
+
+        <iframe
+            src="https://www.google.com/maps?q=Alberto%20Braniff%20202%2C%20Aviaci%C3%B3n%20Civil%2C%20Venustiano%20Carranza%2C%2015740%20Ciudad%20de%20M%C3%A9xico%2C%20CDMX&output=embed"
+            title="Ubicación de Estudio de Danza Misalú"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen>
+        </iframe>
+
+    </div>
+
+    <a
+        class="map-link"
+        href="https://www.google.com/maps/search/?api=1&query=Alberto%20Braniff%20202%2C%20Aviaci%C3%B3n%20Civil%2C%20Venustiano%20Carranza%2C%2015740%20Ciudad%20de%20M%C3%A9xico%2C%20CDMX"
+        target="_blank"
+        rel="noopener noreferrer"
+    >
+        <span>◎</span>
+        Abrir ubicación en Google Maps
+        <strong>↗</strong>
+    </a>
+
+</div>
   </div>
   <div class="form-card reveal">
     {% if messages %}{% for message in messages %}<div class="form-success" role="status">{{ message }}</div>{% endfor %}{% endif %}
