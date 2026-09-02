@@ -1057,3 +1057,91 @@ select:focus-visible {
 .form-card {
     align-self: start;
 }
+/* =========================================================
+   COLLAGE EQUIPO - QUIÉNES SOMOS
+========================================================= */
+
+.team-collage {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+.team-photo {
+    position: relative;
+
+    margin: 0;
+    aspect-ratio: 4 / 5;
+
+    overflow: hidden;
+
+    border-radius: 24px;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    background: rgba(255, 255, 255, 0.03);
+
+    box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.25);
+}
+
+.team-photo img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+    object-position: center;
+
+    transition:
+        transform 0.45s ease,
+        filter 0.45s ease;
+}
+
+.team-photo::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            transparent 55%,
+            rgba(8, 6, 18, 0.25) 100%
+        );
+
+    pointer-events: none;
+}
+
+.team-photo:hover img {
+    transform: scale(1.04);
+    filter: saturate(1.05);
+}
+
+
+
+/* RESPONSIVE */
+
+@media (max-width: 720px) {
+
+    .team-collage {
+        gap: 8px;
+    }
+
+    .team-photo {
+        border-radius: 18px;
+    }
+
+}
+.team-photo-sara img {
+    object-position: center 35%;
+}
+.team-photo-alondra img {
+    object-position: center 30%;
+}
