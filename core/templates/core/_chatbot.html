@@ -1,0 +1,40 @@
+{% load static %}
+<div class="chatbot" data-endpoint="{% url 'core:chat_api' %}">
+  <button class="chatbot-toggle" type="button" aria-expanded="false" aria-controls="chatbot-panel" aria-label="Abrir asistente virtual">
+    <span class="chatbot-toggle-icon" aria-hidden="true">✦</span>
+    <span class="chatbot-toggle-label">¿Dudas? Pregúntame</span>
+  </button>
+
+  <section class="chatbot-panel" id="chatbot-panel" role="dialog" aria-label="Asistente virtual de Misalú" hidden>
+    <header class="chatbot-header">
+      <img src="{% static 'core/img/logo-misalu.webp' %}" alt="" aria-hidden="true">
+      <div>
+        <strong>Asistente Misalú</strong>
+        <span>Responde sobre clases, horarios, vacante y más</span>
+      </div>
+      <button class="chatbot-reset" type="button" aria-label="Nueva conversación" title="Nueva conversación">↺</button>
+      <button class="chatbot-close" type="button" aria-label="Cerrar asistente">×</button>
+    </header>
+
+    <div class="chatbot-messages" aria-live="polite">
+      <div class="chatbot-msg chatbot-msg-bot">¡Hola! Soy el asistente de Estudio de Danza Misalú. Puedo contarte sobre nuestras clases, horarios, la vacante de docente, el equipo o cómo contactarnos. ¿Qué te gustaría saber?</div>
+    </div>
+
+    <div class="chatbot-suggestions" aria-label="Preguntas frecuentes">
+      <span class="chatbot-suggestions-title">Puedes elegir una opción:</span>
+      <button type="button">¿Qué clases ofrecen?</button>
+      <button type="button">¿Qué horarios tienen?</button>
+      <button type="button">¿Hay alguna vacante?</button>
+      <button type="button">¿Dónde están?</button>
+      <button type="button">¿Cómo los contacto?</button>
+      <button type="button">¿Quiénes son?</button>
+    </div>
+
+    <form class="chatbot-form" autocomplete="off">
+      <label class="visually-hidden" for="chatbot-input">Escribe tu pregunta</label>
+      <input id="chatbot-input" name="message" type="text" maxlength="500" placeholder="Escribe tu pregunta…" required>
+      <button type="submit" aria-label="Enviar">→</button>
+    </form>
+    <p class="chatbot-note">Asistente con IA (Google Gemini). Solo responde sobre Misalú.</p>
+  </section>
+</div>

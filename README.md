@@ -92,3 +92,46 @@ http://127.0.0.1:8000/admin/
 
 ## Versión 2
 Incluye Quiénes somos, historia, misión, visión, valores, Core Business, organigrama HTML/CSS, vacante, espacio para directorio, datos de contacto ficticios, guía de imágenes y página `/proyecto/` con S.A.S., Know How y PESTEL.
+
+
+## Chatbot con Google Gemini (versión 3)
+
+El sitio incluye un asistente virtual (botón flotante abajo a la derecha) que **solo responde sobre
+Misalú**: clases, horarios, vacante, equipo, organigrama, contacto, misión/visión, PESTEL, etc.
+Si le preguntan otra cosa, indica amablemente que solo puede ayudar con información del estudio.
+
+### Cómo funciona
+
+- `core/data.py`: contenido del sitio (clases, horarios, valores, contacto…). Lo usan la página y el chatbot.
+- `core/chatbot.py`: arma el contexto del sitio, las reglas del asistente y llama a la API de Gemini.
+  Si cambias textos de `home.html` (historia, vacante, directorio), actualiza también `STATIC_KNOWLEDGE` aquí.
+- `core/views.py` → `chat_api`: endpoint `POST /api/chat/` (valida longitud, limita 12 mensajes/min por IP).
+- `core/templates/core/_chatbot.html`, `core/static/core/js/chatbot.js` y el final de `styles.css`: el widget.
+- La clave de Gemini **nunca** llega al navegador; solo la usa el servidor.
+
+### Configuración
+
+1. Crea una clave gratuita en <https://aistudio.google.com/apikey> (cuenta de Google, sin tarjeta).
+2. Copia `.env.example` como `.env` y pega la clave:
+
+   ```text
+   GEMINI_API_KEY=tu-clave-aqui
+   ```
+
+3. Instala dependencias (se agregó `python-dotenv`) y ejecuta:
+
+   ```powershell
+   pip install -r requirements.txt
+   python manage.py runserver
+   ```
+
+4. En Render: *Environment* → agrega `GEMINI_API_KEY` con tu clave (ya está declarada en `render.yaml`).
+
+Modelo por defecto: `gemini-3.5-flash-lite` (rápido); si falla o se agota la cuota usa `gemini-3.6-flash`.
+Se pueden cambiar con `GEMINI_MODEL` y `GEMINI_FALLBACK_MODELS`.
+
+### Pruebas
+
+```powershell
+python manage.py test core
+```

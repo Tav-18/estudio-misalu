@@ -3,6 +3,13 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Carga variables desde un archivo .env local si python-dotenv está instalado.
+try:
+    from dotenv import load_dotenv
+    load_dotenv(BASE_DIR / ".env")
+except ImportError:
+    pass
+
 SECRET_KEY = os.getenv(
     "DJANGO_SECRET_KEY",
     "dev-only-change-me-before-production"
@@ -86,3 +93,12 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "DENY"
+
+# Chatbot (Google Gemini, capa gratuita). Clave en https://aistudio.google.com/apikey
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
+GEMINI_FALLBACK_MODELS = [
+    model.strip()
+    for model in os.getenv("GEMINI_FALLBACK_MODELS", "gemini-3.6-flash").split(",")
+    if model.strip()
+]

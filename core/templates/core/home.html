@@ -491,7 +491,8 @@
 </section>
 
 <section class="section section-alt"><div class="container vacancy-panel reveal">
-  <div><span class="section-kicker">Vacante por proyecto</span><h2>Docente de Danza</h2><p>El proyecto contempla integrar a un o una docente para impartir clases y participar en la formación de los alumnos.</p></div>
+  <div><span class="section-kicker">Vacante por proyecto</span><h2>Docente de Danza</h2><p>El proyecto contempla integrar a un o una docente para impartir clases y participar en la formación de los alumnos.</p>
+    <a class="button button-primary vacancy-button" href="{{ vacancy_url }}" target="_blank" rel="noopener noreferrer">Ver vacante <span>↗</span></a></div>
   <div class="skill-chips"><span>Programas de entrenamiento</span><span>Clases por niveles</span><span>Técnicas pedagógicas</span><span>Preparación de alumnos</span><span>Coreografías</span><span>Planes de clase</span></div>
 </div></section>
 
@@ -530,6 +531,17 @@
   <div class="contact-copy reveal"><span class="section-kicker">Contacto</span><h2>Haz que el ritmo empiece aquí.</h2><p>¿Quieres conocer más sobre nuestras clases, horarios o niveles?
     Escríbenos y con gusto te brindaremos la información que necesitas.</p>
     <div class="contact-options"><div><span>01</span><p><strong>Correo</strong><br>{{ demo_contact.email }}</p></div><div><span>02</span><p><strong>WhatsApp</strong><br>{{ demo_contact.phone }}</p></div><div><span>03</span><p><strong>Ubicación</strong><br>{{ demo_contact.address }}</p></div></div>
+    <div class="social-block">
+      <span class="social-title">Síguenos en redes</span>
+      <div class="social-links">{% for network in social_networks %}
+        <button class="social-button social-{{ network.slug }}" type="button"
+          data-social-name="{{ network.name }}" data-social-url="{{ network.url }}"
+          data-social-image="{% static network.image %}" data-social-handle="{{ network.handle }}">
+          {% include "core/_social_icon.html" with slug=network.slug %}
+          <span>{{ network.name }}</span>
+        </button>{% endfor %}
+      </div>
+    </div>
     <div class="contact-map">
 
     <div class="contact-map-frame">
@@ -572,12 +584,35 @@
 
 <footer class="site-footer">
   <div class="container footer-grid">
-    <div><img class="footer-logo" src="{% static 'core/img/logo-misalu.png' %}" alt="Logo Misalú"><p>Tu pasión, tu ritmo, tu hogar.</p></div>
+    <div><img class="footer-logo" src="{% static 'core/img/logo-misalu.png' %}" alt="Logo Misalú"><p>Tu pasión, tu ritmo, tu hogar.</p>
+      <div class="footer-social">{% for network in social_networks %}
+        <button class="social-icon-button social-{{ network.slug }}" type="button" aria-label="Ver {{ network.name }} de Misalú"
+          data-social-name="{{ network.name }}" data-social-url="{{ network.url }}"
+          data-social-image="{% static network.image %}" data-social-handle="{{ network.handle }}">
+          {% include "core/_social_icon.html" with slug=network.slug %}
+        </button>{% endfor %}
+      </div></div>
     <div><h2>Explora</h2><a href="#quienes-somos">Quiénes somos</a><a href="#clases">Clases</a><a href="#organizacion">Organigrama</a><a href="#directorio">Directorio</a></div>
     <div><h2>Proyecto académico</h2><a href="{% url 'core:project_info' %}">Información empresarial y PESTEL</a><span>Datos de contacto ficticios</span><span>Django · UX/UI responsive</span></div>
   </div>
   <div class="container footer-bottom"><span>© {% now "Y" %} Estudio de Danza Misalú.</span><span>Proyecto académico · Python + Django</span></div>
 </footer>
+
+<dialog class="social-dialog" id="social-dialog" aria-labelledby="social-dialog-title">
+  <div class="social-browser-bar">
+    <span class="social-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="social-address"><span aria-hidden="true">🔒</span> <span id="social-dialog-url">instagram.com</span></span>
+    <button type="button" class="social-dialog-close" aria-label="Cerrar">×</button>
+  </div>
+  <h2 class="visually-hidden" id="social-dialog-title">Perfil de Misalú</h2>
+  <div class="social-loading" aria-live="polite">
+    <span class="social-spinner" aria-hidden="true"></span>
+    <p>Redirigiendo a <strong id="social-dialog-name">Instagram</strong>…</p>
+  </div>
+  <div class="social-view" hidden>
+    <img id="social-dialog-image" src="" alt="">
+  </div>
+</dialog>
 
 <dialog class="gallery-dialog" id="gallery-dialog"><button type="button" class="dialog-close" aria-label="Cerrar">×</button><div class="dialog-visual"></div><h2 id="dialog-title">Galería Misalú</h2><p>Este espacio queda preparado para fotografías propias de la academia.</p></dialog>
 {% endblock %}

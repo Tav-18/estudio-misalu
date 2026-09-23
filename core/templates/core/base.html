@@ -9,9 +9,12 @@
     <title>{% block title %}Estudio de Danza Misalú{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'core/css/styles.css' %}">
     <script defer src="{% static 'core/js/main.js' %}"></script>
+    <script defer src="{% static 'core/js/chatbot.js' %}"></script>
+    <script defer src="{% static 'core/js/social.js' %}"></script>
 </head>
 <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
     {% block content %}{% endblock %}
+    {% include "core/_chatbot.html" %}
 </body>
 </html>
