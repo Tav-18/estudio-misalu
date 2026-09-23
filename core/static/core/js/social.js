@@ -46,3 +46,20 @@
         if (event.target === dialog) close();  // clic fuera de la ventana
     });
 })();
+
+// Menú "Vacante": el enlace abre el juego en otra pestaña (target="_blank")
+// y aquí la página baja a la sección de la vacante y la resalta.
+(() => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.querySelectorAll("[data-scroll-target]").forEach((link) => {
+        link.addEventListener("click", () => {
+            const target = document.querySelector(link.dataset.scrollTarget);
+            if (!target) return;
+            target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+            target.querySelectorAll(".reveal").forEach((el) => el.classList.add("is-visible"));
+            target.classList.remove("is-highlighted");
+            void target.offsetWidth;  // reinicia la animación si se presiona varias veces
+            target.classList.add("is-highlighted");
+        });
+    });
+})();

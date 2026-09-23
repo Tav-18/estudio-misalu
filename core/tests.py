@@ -86,7 +86,9 @@ class SocialAndVacancyTests(TestCase):
         for name in ("Instagram", "Facebook", "LinkedIn"):
             self.assertContains(response, f'data-social-name="{name}"', count=2)  # contacto + pie
         self.assertContains(response, 'id="social-dialog"')
-        self.assertContains(response, "https://www.friv.com/z/games/powerpamplona/game.html?c")
+        self.assertContains(response, "https://www.friv.com/z/games/powerpamplona/game.html?c", count=2)  # menú + sección
+        self.assertContains(response, 'data-scroll-target="#vacante"')
+        self.assertContains(response, 'id="vacante"')
 
     def test_chatbot_knows_social_networks(self):
         self.assertIn("@misalu_estudiodedanza", chatbot.build_site_knowledge())

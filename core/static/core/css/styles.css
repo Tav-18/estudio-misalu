@@ -1856,3 +1856,29 @@ select:focus-visible {
     .social-spinner { animation: none; }
     .social-button, .social-icon-button { transition: none; }
 }
+
+/* ===== Menú: enlace a la vacante ===== */
+.main-nav a.nav-vacancy {
+    color: var(--pink);
+    font-weight: 700;
+}
+.main-nav a.nav-vacancy:hover,
+.main-nav a.nav-vacancy:focus-visible { color: #ff7cc8; }
+.vacancy-section { scroll-margin-top: 80px; }
+.vacancy-section.is-highlighted .vacancy-panel {
+    animation: vacancy-glow 2.6s ease;
+    outline-offset: 22px;
+    border-radius: var(--radius);
+}
+@keyframes vacancy-glow {
+    0%, 100% { outline: 2px solid rgba(255, 47, 169, 0); box-shadow: 0 0 0 0 rgba(255, 47, 169, 0); }
+    20%, 65% { outline: 2px solid rgba(255, 47, 169, .6); box-shadow: 0 0 90px rgba(255, 47, 169, .18); }
+}
+@media (min-width: 981px) and (max-width: 1180px) {
+    .nav-wrap { gap: 16px; }
+    .main-nav { gap: 12px; }
+    .main-nav a { font-size: .88rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .vacancy-section.is-highlighted .vacancy-panel { animation: none; outline: 2px solid rgba(255, 47, 169, .6); }
+}
