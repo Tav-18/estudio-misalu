@@ -5,7 +5,8 @@ La clave se lee de la variable de entorno GEMINI_API_KEY.
 """
 import json
 import logging
-import os
+import time
+import unicodedata
 import urllib.error
 import urllib.request
 
@@ -17,9 +18,10 @@ from .data import CLASSES, DEMO_CONTACT, GALLERY, PESTEL, SCHEDULE, SOCIAL_NETWO
 logger = logging.getLogger(__name__)
 
 GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-REQUEST_TIMEOUT_SECONDS = 30
+REQUEST_TIMEOUT_SECONDS = 20
 RATE_LIMIT_REQUESTS = 12
 RATE_LIMIT_WINDOW_SECONDS = 60
+RETRY_DELAY_SECONDS = 2  # espera antes de reintentar cuando Google está saturado (503)
 
 
 class ChatbotError(Exception):
@@ -220,18 +222,30 @@ def ask_gemini(message, history=None):
     payload = _build_payload(message, history or [])
     models = [settings.GEMINI_MODEL] + [m for m in settings.GEMINI_FALLBACK_MODELS if m != settings.GEMINI_MODEL]
 
+    attempts = []
     for model in models:
+        attempts += [model, model]  # cada modelo se intenta 2 veces
+
+    for index, model in enumerate(attempts):
+        if model is None:
+            continue
+        if index and attempts[index - 1] == model:
+            time.sleep(RETRY_DELAY_SECONDS)
         try:
             text = _extract_text(_call_gemini(model, api_key, payload))
         except urllib.error.HTTPError as exc:
             body = exc.read().decode("utf-8", errors="replace")[:300]
             logger.warning("Gemini %s respondió %s: %s", model, exc.code, body)
-            # 429 = cuota agotada, 404 = modelo no disponible, 5xx = falla temporal: probar el siguiente.
-            if exc.code in (404, 429) or exc.code >= 500:
+            # 5xx = saturado o falla temporal: reintentar. 404/429 = modelo no disponible o sin cuota: saltar.
+            if exc.code >= 500:
+                continue
+            if exc.code in (404, 429):
+                _skip_model(attempts, index)
                 continue
             raise ChatbotError("No pude procesar tu pregunta. Intenta de nuevo en un momento.") from exc
         except (urllib.error.URLError, TimeoutError, OSError) as exc:
             logger.warning("Error de conexión con Gemini (%s): %s", model, exc)
+            _skip_model(attempts, index)  # si tardó demasiado, no volver a esperar al mismo modelo
             continue
 
         if text:
@@ -241,3 +255,89 @@ def ask_gemini(message, history=None):
     raise ChatbotError(
         "El asistente está ocupado en este momento. Intenta en un minuto o escríbenos desde el formulario de contacto."
     )
+
+
+def _skip_model(attempts, index):
+    """Evita reintentar un modelo que no está disponible o ya no tiene cuota."""
+    model = attempts[index]
+    for later in range(index + 1, len(attempts)):
+        if attempts[later] == model:
+            attempts[later] = None
+
+
+# ---------------------------------------------------------------------------
+# Respaldo sin IA: responde las preguntas del menú cuando Gemini no está disponible.
+# ---------------------------------------------------------------------------
+
+def _normalize(text):
+    text = unicodedata.normalize("NFD", text.lower())
+    return "".join(char for char in text if unicodedata.category(char) != "Mn")
+
+
+def _answer_classes():
+    lines = ["Ofrecemos clases presenciales para todos los niveles:"]
+    lines += [f"- {item['name']} ({item['eyebrow']})" for item in CLASSES]
+    return "\n".join(lines)
+
+
+def _answer_schedule():
+    lines = ["Estos son nuestros horarios:"]
+    lines += [f"- {item['class']}: {item['days']}, {item['time']}" for item in SCHEDULE]
+    return "\n".join(lines)
+
+
+def _answer_vacancy():
+    return (
+        "Sí, tenemos una vacante de Docente de Danza dentro de la Dirección académica, para impartir clases "
+        "y participar en la formación de los alumnos. Puedes abrirla con el botón \"Ver vacante\" de la "
+        "página, y para más detalles escríbenos por el formulario de Contacto."
+    )
+
+
+def _answer_location():
+    return f"Estamos en {DEMO_CONTACT['address']}. En la sección Contacto hay un mapa para ubicarnos."
+
+
+def _answer_contact():
+    return (
+        "Puedes contactarnos por:\n"
+        f"- Correo: {DEMO_CONTACT['email']}\n"
+        f"- WhatsApp: {DEMO_CONTACT['phone']}\n"
+        "- El formulario de la sección Contacto."
+    )
+
+
+def _answer_about():
+    return (
+        "Somos Estudio de Danza Misalú, fundado por Alondra, Sara, Nancy e Iván, quienes se conocieron en la "
+        "FES Zaragoza. Nacimos para acercar la danza a más personas con un espacio creativo, inclusivo y "
+        "profesional. Nuestro lema: \"Tu pasión, tu ritmo, tu hogar\"."
+    )
+
+
+def _answer_social():
+    lines = ["Nos encuentras en redes sociales:"]
+    lines += [f"- {network['name']}: {network['handle']}" for network in SOCIAL_NETWORKS]
+    lines.append("Puedes verlas con los botones de la sección Contacto.")
+    return "\n".join(lines)
+
+
+# El orden importa: se usa la primera coincidencia.
+LOCAL_ANSWERS = [
+    (("horario", "hora", "dia", "cuando"), _answer_schedule),
+    (("vacante", "empleo", "trabajo", "docente", "postul"), _answer_vacancy),
+    (("donde", "ubica", "direccion", "mapa", "llegar"), _answer_location),
+    (("red", "instagram", "facebook", "linkedin"), _answer_social),
+    (("contact", "correo", "whatsapp", "telefono", "email"), _answer_contact),
+    (("quien", "historia", "fundador", "mision", "vision"), _answer_about),
+    (("clase", "estilo", "urbano", "kpop", "k-pop", "contemporaneo", "ofrecen"), _answer_classes),
+]
+
+
+def local_answer(message):
+    """Respuesta básica sin IA para las preguntas frecuentes. Devuelve None si no aplica."""
+    normalized = _normalize(message)
+    for keywords, build_answer in LOCAL_ANSWERS:
+        if any(keyword in normalized for keyword in keywords):
+            return build_answer()
+    return None

@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 
-from .chatbot import ChatbotError, ask_gemini, is_rate_limited
+from .chatbot import ChatbotError, ask_gemini, is_rate_limited, local_answer
 from .data import (
     CLASSES, DEMO_CONTACT, GALLERY, PESTEL, SCHEDULE, SOCIAL_NETWORKS, VACANCY_URL, VALUES,
 )
@@ -93,5 +93,8 @@ def chat_api(request):
     try:
         reply = ask_gemini(message, history)
     except ChatbotError as exc:
+        fallback = local_answer(message)
+        if fallback:
+            return JsonResponse({"reply": fallback, "source": "local"})
         return JsonResponse({"error": str(exc)}, status=503)
     return JsonResponse({"reply": reply})

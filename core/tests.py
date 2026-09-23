@@ -90,3 +90,50 @@ class SocialAndVacancyTests(TestCase):
 
     def test_chatbot_knows_social_networks(self):
         self.assertIn("@misalu_estudiodedanza", chatbot.build_site_knowledge())
+
+
+@override_settings(GEMINI_API_KEY="test-key", GEMINI_MODEL="modelo-a", GEMINI_FALLBACK_MODELS=["modelo-b"])
+class ResilienceTests(TestCase):
+    def setUp(self):
+        cache.clear()
+        self.url = reverse("core:chat_api")
+
+    def post(self, message):
+        return self.client.post(self.url, data=json.dumps({"message": message}), content_type="application/json")
+
+    @staticmethod
+    def _http_error(code):
+        error = urllib.error.HTTPError("u", code, "err", {}, None)
+        error.read = lambda: b"err"
+        return error
+
+    @mock.patch("core.chatbot.time.sleep")
+    @mock.patch("core.chatbot._call_gemini")
+    def test_retries_same_model_when_busy(self, call, _sleep):
+        call.side_effect = [self._http_error(503), _gemini_ok("segundo intento")]
+        response = self.post("hola")
+        self.assertEqual(response.json()["reply"], "segundo intento")
+        self.assertEqual([c.args[0] for c in call.call_args_list], ["modelo-a", "modelo-a"])
+
+    @mock.patch("core.chatbot.time.sleep")
+    @mock.patch("core.chatbot._call_gemini")
+    def test_local_answer_when_gemini_down(self, call, _sleep):
+        call.side_effect = self._http_error(503)
+        response = self.post("¿Qué horarios tienen?")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["source"], "local")
+        self.assertIn("17:00 – 18:30", response.json()["reply"])
+        self.assertEqual(call.call_count, 4)  # 2 modelos x 2 intentos
+
+    @mock.patch("core.chatbot.time.sleep")
+    @mock.patch("core.chatbot._call_gemini")
+    def test_unknown_question_still_errors_when_gemini_down(self, call, _sleep):
+        call.side_effect = self._http_error(503)
+        self.assertEqual(self.post("cuéntame un chiste").status_code, 503)
+
+    def test_menu_questions_have_local_answers(self):
+        menu = ["¿Qué clases ofrecen?", "¿Qué horarios tienen?", "¿Hay alguna vacante?",
+                "¿Dónde están?", "¿Cómo los contacto?", "¿Quiénes son?"]
+        expected = ["Urbano", "17:00", "Docente de Danza", "Alberto Braniff", "WhatsApp", "Alondra"]
+        for question, text in zip(menu, expected):
+            self.assertIn(text, chatbot.local_answer(question), question)
