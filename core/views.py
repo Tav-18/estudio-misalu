@@ -14,7 +14,7 @@ from django.views.decorators.http import require_POST
 from .chatbot import ChatbotError, ask_gemini, is_rate_limited, local_answer
 from .data import (
     CLASSES, DEMO_ACCOUNTS, DEMO_CONTACT, GALLERY, HR_CAMPAIGN, HR_PROCESSES, INTERNAL_ROLES,
-    PESTEL, SCHEDULE, SOCIAL_NETWORKS, VACANCY_URL, VALUES, WORKER_FILTERS,
+    PESTEL, SCHEDULE, SOCIAL_NETWORKS, VACANCY_CAMPAIGN, VACANCY_URL, VALUES, WORKER_FILTERS,
 )
 from .forms import ContactMessageForm, InternalLoginForm, WorkerForm
 from .models import Worker
@@ -124,9 +124,8 @@ def internal_login(request):
         error = "Correo o contraseña incorrectos."
     elif request.method == "POST":
         error = "Escribe un correo válido y tu contraseña."
-    accounts = [{**a, "role_label": INTERNAL_ROLES[a["role"]]["label"],
-                 "role_description": INTERNAL_ROLES[a["role"]]["description"]} for a in DEMO_ACCOUNTS]
-    return render(request, "core/internal_login.html", {"form": form, "error": error, "accounts": accounts})
+    profiles = [{"key": key, **role} for key, role in INTERNAL_ROLES.items()]
+    return render(request, "core/internal_login.html", {"form": form, "error": error, "profiles": profiles})
 
 
 @require_POST
@@ -168,6 +167,7 @@ def internal_area(request):
         "visible_count": sum(1 for r in rows if r["visible"]),
         "hr_processes": HR_PROCESSES if user["can_view_rh"] else [],
         "hr_campaign": HR_CAMPAIGN if user["can_view_rh"] else None,
+        "vacancy_campaign": VACANCY_CAMPAIGN,
         "stats": _personal_stats(workers),
         "active_tab": tab,
     })

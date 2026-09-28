@@ -11,7 +11,6 @@
       <h1>Hola, {{ internal_user.name }}</h1>
       <p>Consulta al personal del estudio y los procesos de Recursos Humanos que sostienen la operación de la academia.</p>
       <p class="session-permissions">Entraste como <strong>{{ internal_user.label }}</strong>: {{ internal_user.description }}</p>
-      <span class="internal-demo-badge">Datos ficticios con fines académicos</span>
     </div>
   </section>
 
@@ -35,6 +34,27 @@
       <!-- ===== TRABAJADORES ===== -->
       <div class="internal-panel" id="panel-trabajadores" role="tabpanel" aria-labelledby="tab-trabajadores"
            {% if active_tab != 'trabajadores' %}hidden{% endif %}>
+        <article class="hr-campaign vacancy-campaign">
+          <div class="hr-campaign-copy">
+            <span class="section-kicker">{{ vacancy_campaign.kicker }}</span>
+            <h2>{{ vacancy_campaign.title }}</h2>
+            <p class="hr-campaign-sub">{{ vacancy_campaign.area }}</p>
+            <p>{{ vacancy_campaign.text }}</p>
+            <div class="vacancy-chips">{% for chip in vacancy_campaign.chips %}<span>{{ chip }}</span>{% endfor %}</div>
+            <a class="button button-primary vacancy-campaign-cta" href="{{ vacancy_url }}" target="_blank" rel="noopener noreferrer">Ver vacante <span>↗</span></a>
+          </div>
+          <div class="hr-campaign-media vacancy-campaign-media">
+            <figure>
+              <video controls playsinline preload="metadata" poster="{% static vacancy_campaign.poster %}">
+                <source src="{% static vacancy_campaign.video %}" type="video/mp4">
+                <source src="{% static vacancy_campaign.video_webm %}" type="video/webm">
+                Tu navegador no puede reproducir este video.
+              </video>
+              <figcaption>Video · Vacante {{ vacancy_campaign.title }}</figcaption>
+            </figure>
+          </div>
+        </article>
+
         <form class="worker-filters" method="get" action="" data-worker-filters>
           <input type="hidden" name="tab" value="trabajadores">
           <div class="worker-search">
@@ -201,6 +221,6 @@
   </section>
 </main>
 
-<footer class="site-footer compact-footer"><div class="container footer-bottom"><span>Estudio de Danza Misalú · Área interna (demostración)</span><a href="{% url 'core:home' %}">Volver al inicio</a></div></footer>
+<footer class="site-footer compact-footer"><div class="container footer-bottom"><span>© {% now "Y" %} Estudio de Danza Misalú · Área interna</span><a href="{% url 'core:home' %}">Volver al inicio</a></div></footer>
 <script defer src="{% static 'core/js/internal.js' %}"></script>
 {% endblock %}

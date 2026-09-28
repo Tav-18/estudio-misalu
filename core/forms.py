@@ -37,7 +37,7 @@ from .models import Worker
 
 class InternalLoginForm(forms.Form):
     email = forms.EmailField(label="Correo", widget=forms.EmailInput(attrs={
-        "placeholder": "tu.correo@misalu.demo", "autocomplete": "username", "autofocus": True}))
+        "placeholder": "nombre@estudiomisalu.mx", "autocomplete": "username", "autofocus": True}))
     password = forms.CharField(label="Contraseña", widget=forms.PasswordInput(attrs={
         "placeholder": "••••••••", "autocomplete": "current-password"}))
 

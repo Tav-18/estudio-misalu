@@ -78,7 +78,7 @@ PESTEL = [
 ]
 
 DEMO_CONTACT = {
-    "email": "hola@misalu.example",
+    "email": "contacto@estudiomisalu.mx",
     "phone": "+52 55 6480 9377",
     "address": "Alberto Braniff 202, Aviación Civil, Venustiano Carranza, 15740 Ciudad de México, CDMX",
 }
@@ -113,7 +113,7 @@ SOCIAL_NETWORKS = [
 VACANCY_URL = "https://www.friv.com/z/games/powerpamplona/game.html?c"
 
 
-# ===== Área interna (datos ficticios con fines académicos) =====
+# ===== Área interna =====
 # Opciones de los filtros de "Trabajadores". El orden aquí es el orden en que aparecen.
 WORKER_FILTERS = [
     {"key": "puesto", "label": "Puesto",
@@ -128,7 +128,7 @@ WORKER_FILTERS = [
      "options": ["Activo", "Inactivo"]},
 ]
 
-# Personal inicial de Misalú (coincide con el Directorio + 2 bajas de ejemplo).
+# Personal inicial de Misalú (coincide con el Directorio, más dos bajas).
 # Se carga a la base de datos con la migración 0002; después se edita desde el Área interna (cuenta admin).
 WORKERS = [
     {"nombre": "Sara Romero", "cargo": "Directora general", "puesto": "Dirección", "area": "Dirección general", "disciplina": "", "tipo": "Tiempo completo", "estatus": "Activo", "ingreso": "2023"},
@@ -197,21 +197,22 @@ HR_PROCESSES = [
      "summary": "Indicadores generales de la plantilla, calculados a partir de la tabla de trabajadores."},
 ]
 
-# ===== Acceso al Área interna (cuentas de demostración, NO son cuentas reales) =====
+# ===== Acceso al Área interna =====
+# Cuentas institucionales por perfil. Las contraseñas se entregan al personal; no se muestran en el sitio.
 # Cada rol define qué puede ver o hacer la persona dentro del portal.
 INTERNAL_ROLES = {
-    "trabajador": {"label": "Trabajador", "can_view_rh": False, "can_edit": False,
-                   "description": "Consulta el directorio de trabajadores. RH está bloqueado."},
+    "trabajador": {"label": "Personal", "can_view_rh": False, "can_edit": False,
+                   "description": "Consulta del directorio de trabajadores."},
     "rh": {"label": "Recursos Humanos", "can_view_rh": True, "can_edit": False,
-           "description": "Ve trabajadores y todos los procesos de RH (con el video y el cartel)."},
+           "description": "Directorio de trabajadores, procesos de Recursos Humanos y comunicados al equipo."},
     "admin": {"label": "Administración", "can_view_rh": True, "can_edit": True,
-              "description": "Ve todo y puede agregar, editar o eliminar trabajadores."},
+              "description": "Acceso completo, incluida la gestión del personal (altas, cambios y bajas)."},
 }
 
 DEMO_ACCOUNTS = [
-    {"email": "trabajador@misalu.demo", "password": "trabajador123", "role": "trabajador", "name": "Equipo Misalú"},
-    {"email": "rh@misalu.demo", "password": "rh123", "role": "rh", "name": "Diego Hernández"},
-    {"email": "admin@misalu.demo", "password": "admin123", "role": "admin", "name": "Sara Romero"},
+    {"email": "personal@estudiomisalu.mx", "password": "Misalu2026", "role": "trabajador", "name": "Equipo Misalú"},
+    {"email": "rh@estudiomisalu.mx", "password": "RH2026", "role": "rh", "name": "Diego Hernández"},
+    {"email": "admin@estudiomisalu.mx", "password": "Admin2026", "role": "admin", "name": "Sara Romero"},
 ]
 
 # Material de la campaña de RH que se muestra en la pestaña "Recursos Humanos".
@@ -226,4 +227,17 @@ HR_CAMPAIGN = {
     "video": "core/media/rh-analisis-puesto.mp4",
     "video_webm": "core/media/rh-analisis-puesto.webm",  # respaldo para navegadores sin MP4/H.264
     "poster": "core/media/rh-analisis-puesto-poster.jpg",
+}
+
+# Anuncio de vacante que se muestra en la pestaña "Trabajadores" (visible para todos los perfiles).
+VACANCY_CAMPAIGN = {
+    "kicker": "Vacante por proyecto",
+    "title": "Docente de Danza",
+    "text": ("Buscamos a un o una docente para impartir clases y participar en la formación de nuestros alumnos. "
+             "Si conoces a alguien con el perfil, compártele la vacante: ¡únete al equipo!"),
+    "chips": ["Programas de entrenamiento", "Clases por niveles", "Coreografías"],
+    "area": "Dirección académica",
+    "video": "core/media/vacante-docente.mp4",
+    "video_webm": "core/media/vacante-docente.webm",
+    "poster": "core/media/vacante-docente-poster.jpg",
 }

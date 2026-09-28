@@ -595,9 +595,9 @@
         </button>{% endfor %}
       </div></div>
     <div><h2>Explora</h2><a href="#quienes-somos">Quiénes somos</a><a href="#clases">Clases</a><a href="#organizacion">Organigrama</a><a href="#directorio">Directorio</a></div>
-    <div><h2>Proyecto académico</h2><a href="{% url 'core:project_info' %}">Información empresarial y PESTEL</a><a href="{% url 'core:internal_area' %}">Área interna (Trabajadores y RH)</a><span>Datos de contacto ficticios</span><span>Django · UX/UI responsive</span></div>
+    <div><h2>Institucional</h2><a href="{% url 'core:project_info' %}">Información empresarial y PESTEL</a><a href="{% url 'core:internal_area' %}">Área interna (personal)</a><a href="#contacto">Contacto</a></div>
   </div>
-  <div class="container footer-bottom"><span>© {% now "Y" %} Estudio de Danza Misalú.</span><span>Proyecto académico · Python + Django</span></div>
+  <div class="container footer-bottom"><span>© {% now "Y" %} Estudio de Danza Misalú.</span><span>Todos los derechos reservados.</span></div>
 </footer>
 
 <dialog class="social-dialog" id="social-dialog" aria-labelledby="social-dialog-title">
@@ -616,5 +616,5 @@
   </div>
 </dialog>
 
-<dialog class="gallery-dialog" id="gallery-dialog"><button type="button" class="dialog-close" aria-label="Cerrar">×</button><div class="dialog-visual"></div><h2 id="dialog-title">Galería Misalú</h2><p>Este espacio queda preparado para fotografías propias de la academia.</p></dialog>
+<dialog class="gallery-dialog" id="gallery-dialog"><button type="button" class="dialog-close" aria-label="Cerrar">×</button><div class="dialog-visual"></div><h2 id="dialog-title">Galería Misalú</h2><p>Momentos de la comunidad Misalú.</p></dialog>
 {% endblock %}

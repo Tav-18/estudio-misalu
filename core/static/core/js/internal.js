@@ -97,17 +97,8 @@
         });
     });
 
-    // ---------- Login: llenar con una cuenta de prueba y mostrar contraseña ----------
-    const emailInput = document.querySelector('.login-form input[name="email"]');
+    // ---------- Login: mostrar u ocultar la contraseña ----------
     const passwordInput = document.querySelector('.login-form input[name="password"]');
-    document.querySelectorAll("[data-fill-email]").forEach((button) => {
-        button.addEventListener("click", () => {
-            emailInput.value = button.dataset.fillEmail;
-            passwordInput.value = button.dataset.fillPassword;
-            document.querySelectorAll("[data-fill-email]").forEach((b) => b.classList.toggle("is-selected", b === button));
-            document.querySelector(".login-form button[type=submit]")?.focus();
-        });
-    });
     document.querySelector("[data-password-toggle]")?.addEventListener("click", (event) => {
         const show = passwordInput.type === "password";
         passwordInput.type = show ? "text" : "password";

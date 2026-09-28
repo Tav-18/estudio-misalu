@@ -156,8 +156,14 @@ class InternalAreaTests(TestCase):
         response = self.client.get(self.url)
         self.assertRedirects(response, f"{reverse('core:internal_login')}?next={self.url}")
 
+    def test_login_page_does_not_show_credentials(self):
+        response = self.client.get(reverse("core:internal_login"))
+        self.assertContains(response, "Perfiles de acceso")
+        for word in ("RH2026", "Admin2026", "Misalu2026", "prueba", "ficticio", "demostración"):
+            self.assertNotContains(response, word)
+
     def test_wrong_password_is_rejected(self):
-        response = self.login("rh@misalu.demo", "incorrecta")
+        response = self.login("rh@estudiomisalu.mx", "incorrecta")
         self.assertContains(response, "Correo o contraseña incorrectos")
         self.assertEqual(self.client.get(self.url).status_code, 302)
 
@@ -165,7 +171,7 @@ class InternalAreaTests(TestCase):
         self.assertContains(self.client.get(reverse("core:home")), self.url)
 
     def test_worker_account_sees_workers_but_rh_is_locked(self):
-        self.login("trabajador@misalu.demo", "trabajador123")
+        self.login("personal@estudiomisalu.mx", "Misalu2026")
         response = self.client.get(self.url, {"tab": "rh"})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context["workers"]), 25)
@@ -173,9 +179,10 @@ class InternalAreaTests(TestCase):
         self.assertNotContains(response, "rh-analisis-puesto")
         self.assertNotContains(response, "Agregar trabajador")
         self.assertEqual(self.client.get(reverse("core:worker_create")).status_code, 302)
+        self.assertContains(response, "vacante-docente")
 
     def test_rh_account_sees_campaign_video_and_image(self):
-        self.login("rh@misalu.demo", "rh123")
+        self.login("rh@estudiomisalu.mx", "RH2026")
         response = self.client.get(self.url, {"tab": "rh"})
         self.assertEqual(response.context["active_tab"], "rh")
         self.assertContains(response, "rh-analisis-puesto")
@@ -184,17 +191,17 @@ class InternalAreaTests(TestCase):
         self.assertNotContains(response, "Agregar trabajador")
 
     def test_filters_combine(self):
-        self.login("rh@misalu.demo", "rh123")
+        self.login("rh@estudiomisalu.mx", "RH2026")
         response = self.client.get(self.url, {"puesto": "Docente", "disciplina": "K-pop", "estatus": "Activo"})
         self.assertEqual(sorted(self.visible_names(response)), ["Camila Vargas", "José Luis Morales"])
 
     def test_search_ignores_accents_and_case(self):
-        self.login("trabajador@misalu.demo", "trabajador123")
+        self.login("personal@estudiomisalu.mx", "Misalu2026")
         response = self.client.get(self.url, {"q": "jose luis"})
         self.assertEqual(self.visible_names(response), ["José Luis Morales"])
 
     def test_admin_can_add_edit_and_delete_workers(self):
-        self.login("ADMIN@misalu.demo", "admin123")
+        self.login("ADMIN@estudiomisalu.mx", "Admin2026")
         self.assertContains(self.client.get(self.url), "Agregar trabajador")
         data = {"nombre": "Lucía Pérez", "cargo": "Maestra de urbano", "puesto": "Docente", "area": "Académica",
                 "disciplina": "Urbano", "tipo": "Medio tiempo", "estatus": "Activo", "ingreso": 2026}
@@ -207,6 +214,6 @@ class InternalAreaTests(TestCase):
         self.assertFalse(Worker.objects.filter(pk=worker.pk).exists())
 
     def test_logout(self):
-        self.login("rh@misalu.demo", "rh123")
+        self.login("rh@estudiomisalu.mx", "RH2026")
         self.client.post(reverse("core:internal_logout"))
         self.assertEqual(self.client.get(self.url).status_code, 302)

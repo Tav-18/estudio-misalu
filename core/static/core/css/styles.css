@@ -2329,3 +2329,26 @@ select:focus-visible {
     .worker-table td.worker-edit-cell::before { display: none; }
 }
 .hr-campaign-media img { aspect-ratio: auto; height: auto; }
+.profile-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.profile-item {
+    display: grid; gap: 4px; padding: 14px 16px;
+    border: 1px solid var(--line); border-radius: 16px; background: rgba(255,255,255,.02);
+}
+.profile-rh .demo-role { color: #ff7cc8; }
+.profile-admin .demo-role { color: #b98cff; }
+.profile-item small { color: var(--muted); font-size: .88rem; }
+.login-help { margin: 18px 0 0 !important; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
+.login-help strong { color: white; }
+
+/* Trabajadores: anuncio de vacante con video */
+.vacancy-campaign { grid-template-columns: minmax(0, 1fr) minmax(0, 300px); margin-bottom: 28px; }
+.vacancy-campaign-media { grid-template-columns: 1fr; }
+.vacancy-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 22px; }
+.vacancy-chips span {
+    padding: 6px 14px; border-radius: 999px; font-size: .85rem;
+    border: 1px solid rgba(19,230,223,.35); color: #bff7f3; background: rgba(19,230,223,.06);
+}
+@media (max-width: 980px) {
+    .vacancy-campaign { grid-template-columns: 1fr; }
+    .vacancy-campaign-media { max-width: 320px; margin-inline: auto; width: 100%; }
+}

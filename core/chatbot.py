@@ -36,7 +36,6 @@ STATIC_KNOWLEDGE = """
 - Giro: servicios de enseñanza artística y recreativa.
 - Público: personas interesadas en desarrollar habilidades dancísticas. Clases para todos los niveles.
 - Atributos: creativa, inclusiva, dinámica, accesible e interpersonal.
-- Es un proyecto académico desarrollado con Python + Django. Los datos de contacto son ficticios.
 
 ## Quiénes somos / historia
 Misalú nace de experiencias personales marcadas por largos traslados, barreras para acceder a espacios
@@ -99,13 +98,10 @@ redes sociales y contenido digital; reconocimiento de la academia.
 ## Secciones del sitio
 Inicio, Quiénes somos, Clases, Horarios, Organización (organigrama y directorio), Galería y Contacto
 (con formulario). Hay una página aparte "/proyecto/" con información empresarial y análisis PESTEL.
-También hay una página "/area-interna/" (enlace "Área interna" en el menú): un portal interno de demostración
-que pide iniciar sesión con una cuenta de prueba (trabajador, Recursos Humanos o administración; las cuentas
-aparecen en la misma pantalla de acceso). Los trabajadores solo ven el directorio; RH ve además sus procesos
-con un video y un cartel sobre el análisis de puesto; administración puede agregar o editar trabajadores.
-Incluye la tabla de Trabajadores (buscador y filtros por puesto, área, disciplina, tipo y estatus) y los procesos
-de Recursos Humanos (reclutamiento y selección, análisis de puestos, evaluación del desempeño, capacitación,
-expedientes, vacantes y personal).
+También hay una "Área interna" (enlace en el menú) exclusiva para el personal del estudio: requiere iniciar
+sesión con la cuenta institucional. Según el perfil (personal, Recursos Humanos o administración) permite consultar
+el directorio de trabajadores, los procesos de Recursos Humanos y los comunicados al equipo, o gestionar al personal.
+Nunca des correos de acceso ni contraseñas: si alguien no puede entrar, debe solicitarlo a Recursos Humanos.
 """
 
 

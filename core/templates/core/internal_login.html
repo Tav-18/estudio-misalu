@@ -14,7 +14,7 @@
     <section class="login-card" aria-labelledby="login-title">
       <span class="eyebrow">Portal interno · Misalú</span>
       <h1 id="login-title">Área interna</h1>
-      <p class="login-lead">Inicia sesión con tu correo del estudio para consultar la información del equipo.</p>
+      <p class="login-lead">Acceso exclusivo para el personal de Estudio de Danza Misalú. Inicia sesión con tu correo institucional.</p>
 
       {% if error %}<p class="login-error" role="alert">{{ error }}</p>{% endif %}
 
@@ -34,25 +34,22 @@
       </form>
     </section>
 
-    <aside class="login-demo" aria-labelledby="demo-title">
-      <h2 id="demo-title">Cuentas de prueba</h2>
-      <p>Correos inventados para la demostración. Da clic en una para llenar el formulario.</p>
-      <ul>
-        {% for a in accounts %}
-        <li>
-          <button type="button" class="demo-account demo-{{ a.role }}" data-fill-email="{{ a.email }}" data-fill-password="{{ a.password }}">
-            <span class="demo-role">{{ a.role_label }}</span>
-            <strong>{{ a.email }}</strong>
-            <span class="demo-pass">Contraseña: <code>{{ a.password }}</code></span>
-            <small>{{ a.role_description }}</small>
-          </button>
+    <aside class="login-demo" aria-labelledby="profiles-title">
+      <h2 id="profiles-title">Perfiles de acceso</h2>
+      <p>El contenido disponible depende del perfil asignado a tu cuenta institucional.</p>
+      <ul class="profile-list">
+        {% for p in profiles %}
+        <li class="profile-item profile-{{ p.key }}">
+          <span class="demo-role">{{ p.label }}</span>
+          <small>{{ p.description }}</small>
         </li>
         {% endfor %}
       </ul>
+      <p class="login-help">¿No tienes acceso o olvidaste tu contraseña? Solicítalo al área de <strong>Recursos Humanos</strong>.</p>
     </aside>
   </div>
 </main>
 
-<footer class="site-footer compact-footer"><div class="container footer-bottom"><span>Estudio de Danza Misalú · Acceso de demostración</span><a href="{% url 'core:home' %}">Volver al inicio</a></div></footer>
+<footer class="site-footer compact-footer"><div class="container footer-bottom"><span>© {% now "Y" %} Estudio de Danza Misalú · Acceso exclusivo para personal</span><a href="{% url 'core:home' %}">Volver al inicio</a></div></footer>
 <script defer src="{% static 'core/js/internal.js' %}"></script>
 {% endblock %}

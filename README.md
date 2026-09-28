@@ -151,22 +151,22 @@ Los datos están en `core/data.py` (`WORKERS`, `WORKER_FILTERS`, `HR_PROCESSES`)
 un trabajador solo edita esa lista. Archivos: `core/templates/core/internal_area.html`,
 `core/static/core/js/internal.js` y el bloque "Área interna" al final de `styles.css`.
 
-### Acceso con cuentas de prueba (versión 5)
+### Acceso al Área interna (versión 5)
 
-Al entrar a **Área interna** se pide iniciar sesión. Las cuentas son inventadas y aparecen en la misma
-pantalla de acceso (clic en una para llenar el formulario):
+Al entrar a **Área interna** se pide iniciar sesión. Las cuentas **no** se muestran en el sitio; se
+entregan al personal:
 
-| Correo | Contraseña | Qué puede hacer |
+| Correo | Contraseña | Perfil |
 |---|---|---|
-| `trabajador@misalu.demo` | `trabajador123` | Ver el directorio de trabajadores. RH aparece bloqueado. |
-| `rh@misalu.demo` | `rh123` | Ver trabajadores y los procesos de RH con el video y el cartel del análisis de puesto. |
-| `admin@misalu.demo` | `admin123` | Todo lo anterior + agregar, editar y eliminar trabajadores. |
+| `personal@estudiomisalu.mx` | `Misalu2026` | Personal: consulta el directorio de trabajadores. RH aparece bloqueado. |
+| `rh@estudiomisalu.mx` | `RH2026` | Recursos Humanos: trabajadores, procesos de RH, video y cartel del análisis de puesto. |
+| `admin@estudiomisalu.mx` | `Admin2026` | Administración: todo lo anterior + altas, cambios y bajas de trabajadores. |
 
-- Las cuentas y los permisos por rol están en `core/data.py` (`DEMO_ACCOUNTS`, `INTERNAL_ROLES`).
-- Los trabajadores ahora viven en la base de datos (modelo `Worker`). **Después de actualizar, ejecuta
+- Las cuentas y los permisos por perfil están en `core/data.py` (`DEMO_ACCOUNTS`, `INTERNAL_ROLES`).
+- Los trabajadores viven en la base de datos (modelo `Worker`). **Después de actualizar, ejecuta
   `python manage.py migrate`**: la migración `0002_worker` crea la tabla y carga al personal inicial.
 - Video y cartel de RH: `core/static/core/media/` y `core/static/core/img/rh/` (configurados en `HR_CAMPAIGN`).
-- Es un login de demostración para la presentación: las contraseñas están en el código y se muestran en
-  pantalla, así que no sirve para proteger información real.
+- Video de la vacante Docente de Danza en la pestaña Trabajadores (visible para todos los perfiles): `VACANCY_CAMPAIGN`.
+- Las contraseñas están escritas en el código: sirve para presentar el portal, no para proteger información real.
 - En Render (plan gratuito) la base SQLite se reinicia en cada despliegue: los cambios hechos con la cuenta
   admin se pierden y vuelve la lista inicial.
