@@ -7,6 +7,7 @@ from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from . import chatbot
+from .models import Worker
 
 
 def _gemini_ok(text):
@@ -139,3 +140,73 @@ class ResilienceTests(TestCase):
         expected = ["Urbano", "17:00", "Docente de Danza", "Alberto Braniff", "WhatsApp", "Alondra"]
         for question, text in zip(menu, expected):
             self.assertIn(text, chatbot.local_answer(question), question)
+
+
+class InternalAreaTests(TestCase):
+    def setUp(self):
+        self.url = reverse("core:internal_area")
+
+    def login(self, email, password):
+        return self.client.post(reverse("core:internal_login"), {"email": email, "password": password})
+
+    def visible_names(self, response):
+        return [w["nombre"] for w in response.context["workers"] if w["visible"]]
+
+    def test_requires_login(self):
+        response = self.client.get(self.url)
+        self.assertRedirects(response, f"{reverse('core:internal_login')}?next={self.url}")
+
+    def test_wrong_password_is_rejected(self):
+        response = self.login("rh@misalu.demo", "incorrecta")
+        self.assertContains(response, "Correo o contraseña incorrectos")
+        self.assertEqual(self.client.get(self.url).status_code, 302)
+
+    def test_home_menu_links_to_internal_area(self):
+        self.assertContains(self.client.get(reverse("core:home")), self.url)
+
+    def test_worker_account_sees_workers_but_rh_is_locked(self):
+        self.login("trabajador@misalu.demo", "trabajador123")
+        response = self.client.get(self.url, {"tab": "rh"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["workers"]), 25)
+        self.assertContains(response, "Contenido exclusivo de Recursos Humanos")
+        self.assertNotContains(response, "rh-analisis-puesto")
+        self.assertNotContains(response, "Agregar trabajador")
+        self.assertEqual(self.client.get(reverse("core:worker_create")).status_code, 302)
+
+    def test_rh_account_sees_campaign_video_and_image(self):
+        self.login("rh@misalu.demo", "rh123")
+        response = self.client.get(self.url, {"tab": "rh"})
+        self.assertEqual(response.context["active_tab"], "rh")
+        self.assertContains(response, "rh-analisis-puesto")
+        self.assertContains(response, "analisis-puesto")
+        self.assertContains(response, "Evaluación del desempeño")
+        self.assertNotContains(response, "Agregar trabajador")
+
+    def test_filters_combine(self):
+        self.login("rh@misalu.demo", "rh123")
+        response = self.client.get(self.url, {"puesto": "Docente", "disciplina": "K-pop", "estatus": "Activo"})
+        self.assertEqual(sorted(self.visible_names(response)), ["Camila Vargas", "José Luis Morales"])
+
+    def test_search_ignores_accents_and_case(self):
+        self.login("trabajador@misalu.demo", "trabajador123")
+        response = self.client.get(self.url, {"q": "jose luis"})
+        self.assertEqual(self.visible_names(response), ["José Luis Morales"])
+
+    def test_admin_can_add_edit_and_delete_workers(self):
+        self.login("ADMIN@misalu.demo", "admin123")
+        self.assertContains(self.client.get(self.url), "Agregar trabajador")
+        data = {"nombre": "Lucía Pérez", "cargo": "Maestra de urbano", "puesto": "Docente", "area": "Académica",
+                "disciplina": "Urbano", "tipo": "Medio tiempo", "estatus": "Activo", "ingreso": 2026}
+        self.client.post(reverse("core:worker_create"), data)
+        worker = Worker.objects.get(nombre="Lucía Pérez")
+        self.client.post(reverse("core:worker_edit", args=[worker.pk]), {**data, "estatus": "Inactivo"})
+        worker.refresh_from_db()
+        self.assertEqual(worker.estatus, "Inactivo")
+        self.client.post(reverse("core:worker_delete", args=[worker.pk]))
+        self.assertFalse(Worker.objects.filter(pk=worker.pk).exists())
+
+    def test_logout(self):
+        self.login("rh@misalu.demo", "rh123")
+        self.client.post(reverse("core:internal_logout"))
+        self.assertEqual(self.client.get(self.url).status_code, 302)

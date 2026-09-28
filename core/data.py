@@ -111,3 +111,119 @@ SOCIAL_NETWORKS = [
 
 # Enlace del botón "Ver vacante".
 VACANCY_URL = "https://www.friv.com/z/games/powerpamplona/game.html?c"
+
+
+# ===== Área interna (datos ficticios con fines académicos) =====
+# Opciones de los filtros de "Trabajadores". El orden aquí es el orden en que aparecen.
+WORKER_FILTERS = [
+    {"key": "puesto", "label": "Puesto",
+     "options": ["Dirección", "Docente", "Administración", "Marketing", "Recursos Humanos", "Recepción", "Servicios"]},
+    {"key": "area", "label": "Área",
+     "options": ["Dirección general", "Académica", "Administración", "Marketing", "Recursos Humanos", "Servicios"]},
+    {"key": "disciplina", "label": "Disciplina",
+     "options": ["Urbano", "K-pop", "Contemporáneo"]},
+    {"key": "tipo", "label": "Tipo de trabajador",
+     "options": ["Tiempo completo", "Medio tiempo"]},
+    {"key": "estatus", "label": "Estatus",
+     "options": ["Activo", "Inactivo"]},
+]
+
+# Personal inicial de Misalú (coincide con el Directorio + 2 bajas de ejemplo).
+# Se carga a la base de datos con la migración 0002; después se edita desde el Área interna (cuenta admin).
+WORKERS = [
+    {"nombre": "Sara Romero", "cargo": "Directora general", "puesto": "Dirección", "area": "Dirección general", "disciplina": "", "tipo": "Tiempo completo", "estatus": "Activo", "ingreso": "2023"},
+    {"nombre": "Nancy Rodríguez", "cargo": "Fundadora", "puesto": "Dirección", "area": "Dirección general", "disciplina": "", "tipo": "Tiempo completo", "estatus": "Activo", "ingreso": "2023"},
+    {"nombre": "Alondra Laguna", "cargo": "Fundadora", "puesto": "Dirección", "area": "Dirección general", "disciplina": "", "tipo": "Tiempo completo", "estatus": "Activo", "ingreso": "2023"},
+    {"nombre": "Iván Bello", "cargo": "Fundador", "puesto": "Dirección", "area": "Dirección general", "disciplina": "", "tipo": "Tiempo completo", "estatus": "Activo", "ingreso": "2023"},
+    {"nombre": "Valeria Martínez", "cargo": "Directora académica", "puesto": "Dirección", "area": "Académica", "disciplina": "", "tipo": "Tiempo completo", "estatus": "Activo", "ingreso": "2023"},
+    {"nombre": "Alejandro García", "cargo": "Maestro de urbano", "puesto": "Docente", "area": "Académica", "disciplina": "Urbano", "tipo": "Medio tiempo", "estatus": "Activo", "ingreso": "2024"},
+    {"nombre": "Daniela Sánchez", "cargo": "Maestra de urbano", "puesto": "Docente", "area": "Académica", "disciplina": "Urbano", "tipo": "Tiempo completo", "estatus": "Activo", "ingreso": "2023"},
+    {"nombre": "José Luis Morales", "cargo": "Maestro de K-pop", "puesto": "Docente", "area": "Académica", "disciplina": "K-pop", "tipo": "Medio tiempo", "estatus": "Activo", "ingreso": "2024"},
+    {"nombre": "Camila Vargas", "cargo": "Maestra de K-pop", "puesto": "Docente", "area": "Académica", "disciplina": "K-pop", "tipo": "Medio tiempo", "estatus": "Activo", "ingreso": "2025"},
+    {"nombre": "Roberto Flores", "cargo": "Maestro de contemporáneo", "puesto": "Docente", "area": "Académica", "disciplina": "Contemporáneo", "tipo": "Tiempo completo", "estatus": "Activo", "ingreso": "2023"},
+    {"nombre": "Andrea Castillo", "cargo": "Maestra de contemporáneo", "puesto": "Docente", "area": "Académica", "disciplina": "Contemporáneo", "tipo": "Medio tiempo", "estatus": "Activo", "ingreso": "2024"},
+    {"nombre": "Fernanda Ruiz", "cargo": "Maestra de K-pop", "puesto": "Docente", "area": "Académica", "disciplina": "K-pop", "tipo": "Medio tiempo", "estatus": "Inactivo", "ingreso": "2023"},
+    {"nombre": "Miguel Ángel Cruz", "cargo": "Director administrativo", "puesto": "Dirección", "area": "Administración", "disciplina": "", "tipo": "Tiempo completo", "estatus": "Activo", "ingreso": "2023"},
+    {"nombre": "Sofía Mendoza", "cargo": "Tesorera", "puesto": "Administración", "area": "Administración", "disciplina": "", "tipo": "Tiempo completo", "estatus": "Activo", "ingreso": "2023"},
+    {"nombre": "Luis Fernando Ortiz", "cargo": "Contabilidad", "puesto": "Administración", "area": "Administración", "disciplina": "", "tipo": "Medio tiempo", "estatus": "Activo", "ingreso": "2024"},
+    {"nombre": "Paola Jiménez", "cargo": "Directora de marketing", "puesto": "Dirección", "area": "Marketing", "disciplina": "", "tipo": "Tiempo completo", "estatus": "Activo", "ingreso": "2023"},
+    {"nombre": "Ricardo Navarro", "cargo": "Community manager", "puesto": "Marketing", "area": "Marketing", "disciplina": "", "tipo": "Medio tiempo", "estatus": "Activo", "ingreso": "2024"},
+    {"nombre": "Karen Flores", "cargo": "Diseño y publicidad", "puesto": "Marketing", "area": "Marketing", "disciplina": "", "tipo": "Medio tiempo", "estatus": "Activo", "ingreso": "2024"},
+    {"nombre": "Emmanuel Reyes", "cargo": "Eventos y presentaciones", "puesto": "Marketing", "area": "Marketing", "disciplina": "", "tipo": "Medio tiempo", "estatus": "Activo", "ingreso": "2025"},
+    {"nombre": "Diego Hernández", "cargo": "Recursos Humanos", "puesto": "Recursos Humanos", "area": "Recursos Humanos", "disciplina": "", "tipo": "Tiempo completo", "estatus": "Activo", "ingreso": "2023"},
+    {"nombre": "Natalia Cruz", "cargo": "Directora de servicios", "puesto": "Dirección", "area": "Servicios", "disciplina": "", "tipo": "Tiempo completo", "estatus": "Activo", "ingreso": "2023"},
+    {"nombre": "Gabriela Torres", "cargo": "Recepción", "puesto": "Recepción", "area": "Servicios", "disciplina": "", "tipo": "Tiempo completo", "estatus": "Activo", "ingreso": "2024"},
+    {"nombre": "Héctor Aguilar", "cargo": "Recepción (turno tarde)", "puesto": "Recepción", "area": "Servicios", "disciplina": "", "tipo": "Medio tiempo", "estatus": "Inactivo", "ingreso": "2024"},
+    {"nombre": "Jorge Ramírez", "cargo": "Limpieza", "puesto": "Servicios", "area": "Servicios", "disciplina": "", "tipo": "Medio tiempo", "estatus": "Activo", "ingreso": "2024"},
+    {"nombre": "Daniela Vargas", "cargo": "Mantenimiento", "puesto": "Servicios", "area": "Servicios", "disciplina": "", "tipo": "Medio tiempo", "estatus": "Activo", "ingreso": "2025"},
+]
+
+# Procesos de Recursos Humanos (pestaña "Recursos Humanos").
+HR_PROCESSES = [
+    {"slug": "reclutamiento", "title": "Reclutamiento y selección", "icon": "◎",
+     "summary": "Atraer y elegir a las personas adecuadas para cada puesto, con criterios claros y un proceso justo.",
+     "steps": ["Requisición de personal", "Publicación de la vacante", "Filtro de CV", "Entrevista por competencias",
+               "Clase muestra / prueba práctica", "Pruebas psicométricas", "Oferta y contratación"],
+     "note": "Proceso en curso: Docente de Danza · 14 postulaciones · 5 en entrevista · 2 en clase muestra."},
+    {"slug": "analisis", "title": "Análisis de puestos", "icon": "◇",
+     "summary": "Describir qué hace cada puesto, qué se necesita para ocuparlo y cómo se relaciona con los demás.",
+     "rows": [
+         ("Puesto", "Docente de Danza"),
+         ("Reporta a", "Dirección académica"),
+         ("Objetivo", "Impartir clases por niveles y acompañar el desarrollo técnico y expresivo de los alumnos."),
+         ("Funciones", "Planear clases, montar coreografías, evaluar el avance y preparar presentaciones."),
+         ("Perfil", "Experiencia docente en danza; dominio de urbano, K-pop o contemporáneo."),
+         ("Competencias", "Comunicación, empatía, trabajo en equipo, creatividad y puntualidad."),
+     ]},
+    {"slug": "desempeno", "title": "Evaluación del desempeño", "icon": "↗",
+     "summary": "Medir cada semestre cómo trabaja cada persona para reconocer logros y detectar áreas de mejora.",
+     "criteria": [("Calidad de las clases", 30), ("Puntualidad y asistencia", 20),
+                  ("Trabajo en equipo", 20), ("Satisfacción de alumnos", 20), ("Iniciativa", 10)],
+     "note": "Método: escala de 1 a 5 + retroalimentación 360° (dirección, compañeros y alumnos)."},
+    {"slug": "capacitacion", "title": "Capacitación", "icon": "✦",
+     "summary": "Plan anual para actualizar técnicas, pedagogía y habilidades de atención al alumno.",
+     "courses": [("Primeros auxilios y prevención de lesiones", "Todo el personal", "Febrero"),
+               ("Didáctica de la danza por niveles", "Docentes", "Abril"),
+               ("Atención y servicio al cliente", "Recepción y servicios", "Junio"),
+               ("Inclusión y trato respetuoso", "Todo el personal", "Septiembre")]},
+    {"slug": "expedientes", "title": "Expedientes", "icon": "▤",
+     "summary": "Cada trabajador cuenta con un expediente digital con la documentación necesaria para su contratación.",
+     "checklist": ["Solicitud de empleo y CV", "Contrato firmado", "Comprobante de domicilio",
+                   "Comprobante de estudios", "Alta en el IMSS", "Evaluaciones de desempeño"]},
+    {"slug": "vacantes", "title": "Vacantes", "icon": "★",
+     "summary": "Puestos abiertos actualmente en Misalú.",
+     "vacancies": [("Docente de Danza", "Dirección académica", "Medio tiempo")]},
+    {"slug": "personal", "title": "Personal", "icon": "♥",
+     "summary": "Indicadores generales de la plantilla, calculados a partir de la tabla de trabajadores."},
+]
+
+# ===== Acceso al Área interna (cuentas de demostración, NO son cuentas reales) =====
+# Cada rol define qué puede ver o hacer la persona dentro del portal.
+INTERNAL_ROLES = {
+    "trabajador": {"label": "Trabajador", "can_view_rh": False, "can_edit": False,
+                   "description": "Consulta el directorio de trabajadores. RH está bloqueado."},
+    "rh": {"label": "Recursos Humanos", "can_view_rh": True, "can_edit": False,
+           "description": "Ve trabajadores y todos los procesos de RH (con el video y el cartel)."},
+    "admin": {"label": "Administración", "can_view_rh": True, "can_edit": True,
+              "description": "Ve todo y puede agregar, editar o eliminar trabajadores."},
+}
+
+DEMO_ACCOUNTS = [
+    {"email": "trabajador@misalu.demo", "password": "trabajador123", "role": "trabajador", "name": "Equipo Misalú"},
+    {"email": "rh@misalu.demo", "password": "rh123", "role": "rh", "name": "Diego Hernández"},
+    {"email": "admin@misalu.demo", "password": "admin123", "role": "admin", "name": "Sara Romero"},
+]
+
+# Material de la campaña de RH que se muestra en la pestaña "Recursos Humanos".
+HR_CAMPAIGN = {
+    "title": "Seguimos creciendo juntos",
+    "subtitle": "Comunicado al equipo sobre el análisis de puesto",
+    "text": ("Este proceso nos permitirá conocer y evaluar cada puesto de trabajo para mejorar la organización "
+             "y la experiencia de todo el equipo. El enfoque está en el puesto, no en la persona: no implica "
+             "evaluar tu desempeño ni pone en riesgo tu puesto."),
+    "tools": ["Entrevistas con el equipo", "Cuestionarios sobre las actividades", "Observación directa del día a día"],
+    "image": "core/img/rh/analisis-puesto.jpg",
+    "video": "core/media/rh-analisis-puesto.mp4",
+    "video_webm": "core/media/rh-analisis-puesto.webm",  # respaldo para navegadores sin MP4/H.264
+    "poster": "core/media/rh-analisis-puesto-poster.jpg",
+}

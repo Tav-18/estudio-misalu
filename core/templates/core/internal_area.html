@@ -1,0 +1,206 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Área interna | Estudio de Danza Misalú{% endblock %}
+{% block content %}
+{% include "core/_internal_header.html" %}
+
+<main id="contenido" class="internal-page">
+  <section class="project-hero internal-hero">
+    <div class="container">
+      <span class="eyebrow">Portal interno · Misalú</span>
+      <h1>Hola, {{ internal_user.name }}</h1>
+      <p>Consulta al personal del estudio y los procesos de Recursos Humanos que sostienen la operación de la academia.</p>
+      <p class="session-permissions">Entraste como <strong>{{ internal_user.label }}</strong>: {{ internal_user.description }}</p>
+      <span class="internal-demo-badge">Datos ficticios con fines académicos</span>
+    </div>
+  </section>
+
+  <section class="section internal-section">
+    <div class="container">
+      <div class="internal-tabs" role="tablist" aria-label="Apartados del área interna">
+        <a class="internal-tab" role="tab" id="tab-trabajadores" href="?tab=trabajadores" data-tab="trabajadores"
+           aria-controls="panel-trabajadores" aria-selected="{% if active_tab == 'trabajadores' %}true{% else %}false{% endif %}">
+          <span aria-hidden="true">👥</span> Trabajadores
+        </a>
+        <a class="internal-tab" role="tab" id="tab-rh" href="?tab=rh" data-tab="rh"
+           aria-controls="panel-rh" aria-selected="{% if active_tab == 'rh' %}true{% else %}false{% endif %}">
+          <span aria-hidden="true">{% if internal_user.can_view_rh %}🧑‍💼{% else %}🔒{% endif %}</span> Recursos Humanos
+        </a>
+      </div>
+
+      {% if messages %}{% for message in messages %}
+      <div class="internal-message internal-message-{{ message.tags }}" role="status">{{ message }}</div>
+      {% endfor %}{% endif %}
+
+      <!-- ===== TRABAJADORES ===== -->
+      <div class="internal-panel" id="panel-trabajadores" role="tabpanel" aria-labelledby="tab-trabajadores"
+           {% if active_tab != 'trabajadores' %}hidden{% endif %}>
+        <form class="worker-filters" method="get" action="" data-worker-filters>
+          <input type="hidden" name="tab" value="trabajadores">
+          <div class="worker-search">
+            <label for="worker-q">Buscar trabajador</label>
+            <div class="worker-search-box">
+              <span aria-hidden="true">⌕</span>
+              <input id="worker-q" type="search" name="q" value="{{ query }}" placeholder="Escribe un nombre o cargo…" autocomplete="off" maxlength="60">
+            </div>
+          </div>
+          <div class="worker-selects">
+            {% for f in filters %}
+            <div class="field worker-select">
+              <label for="filter-{{ f.key }}">{{ f.label }}</label>
+              <select id="filter-{{ f.key }}" name="{{ f.key }}" data-filter="{{ f.key }}">
+                <option value="">Todos</option>
+                {% for option in f.options %}
+                <option value="{{ option }}"{% if option == f.selected %} selected{% endif %}>{{ option }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="worker-actions">
+            <p class="worker-count" aria-live="polite">Mostrando <strong data-worker-count>{{ visible_count }}</strong> de {{ workers|length }} trabajadores</p>
+            <div>
+              {% if internal_user.can_edit %}<a class="button button-small button-primary" href="{% url 'core:worker_create' %}">+ Agregar trabajador</a>{% endif %}
+              <button class="button button-small button-primary" type="submit" data-no-js-submit>Aplicar filtros</button>
+              <a class="button button-small button-outline" href="?tab=trabajadores" data-clear-filters>Limpiar filtros</a>
+            </div>
+          </div>
+        </form>
+
+        <div class="worker-table-wrap">
+          <table class="worker-table">
+            <thead>
+              <tr><th scope="col">Trabajador</th><th scope="col">Puesto</th><th scope="col">Área</th><th scope="col">Disciplina</th><th scope="col">Tipo</th><th scope="col">Estatus</th>{% if internal_user.can_edit %}<th scope="col"><span class="visually-hidden">Acciones</span></th>{% endif %}</tr>
+            </thead>
+            <tbody>
+              {% for w in workers %}
+              <tr data-worker data-puesto="{{ w.puesto }}" data-area="{{ w.area }}" data-disciplina="{{ w.disciplina }}"
+                  data-tipo="{{ w.tipo }}" data-estatus="{{ w.estatus }}" data-search="{{ w.search }}"{% if not w.visible %} hidden{% endif %}>
+                <td data-label="Trabajador"><strong>{{ w.nombre }}</strong><small>{{ w.cargo }} · desde {{ w.ingreso }}</small></td>
+                <td data-label="Puesto">{{ w.puesto }}</td>
+                <td data-label="Área">{{ w.area }}</td>
+                <td data-label="Disciplina">{{ w.disciplina|default:"—" }}</td>
+                <td data-label="Tipo">{{ w.tipo }}</td>
+                <td data-label="Estatus"><span class="status-pill status-{{ w.estatus|lower }}">{{ w.estatus }}</span></td>
+                {% if internal_user.can_edit %}<td data-label="Acciones" class="worker-edit-cell"><a class="worker-edit" href="{% url 'core:worker_edit' w.id %}">Editar</a></td>{% endif %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <p class="worker-empty" data-worker-empty{% if visible_count %} hidden{% endif %}>No hay trabajadores que coincidan con esos filtros.</p>
+        </div>
+      </div>
+
+      <!-- ===== RECURSOS HUMANOS ===== -->
+      <div class="internal-panel" id="panel-rh" role="tabpanel" aria-labelledby="tab-rh"
+           {% if active_tab != 'rh' %}hidden{% endif %}>
+        {% if not internal_user.can_view_rh %}
+        <div class="hr-locked">
+          <span class="hr-locked-icon" aria-hidden="true">🔒</span>
+          <h2>Contenido exclusivo de Recursos Humanos</h2>
+          <p>Esta sección solo está disponible para las cuentas de <strong>Recursos Humanos</strong> y <strong>Administración</strong>.
+             Si necesitas información de RH, acércate con Diego Hernández.</p>
+          <a class="text-link" href="?tab=trabajadores" data-go-tab="trabajadores">Ir a Trabajadores <span>→</span></a>
+        </div>
+        {% else %}
+        <article class="hr-campaign">
+          <div class="hr-campaign-copy">
+            <span class="section-kicker">Comunicado al equipo</span>
+            <h2>{{ hr_campaign.title }}</h2>
+            <p class="hr-campaign-sub">{{ hr_campaign.subtitle }}</p>
+            <p>{{ hr_campaign.text }}</p>
+            <ul class="hr-checklist hr-campaign-tools">{% for tool in hr_campaign.tools %}<li>{{ tool }}</li>{% endfor %}</ul>
+          </div>
+          <div class="hr-campaign-media">
+            <figure>
+              <video controls playsinline preload="metadata" poster="{% static hr_campaign.poster %}">
+                <source src="{% static hr_campaign.video %}" type="video/mp4">
+                <source src="{% static hr_campaign.video_webm %}" type="video/webm">
+                Tu navegador no puede reproducir este video.
+              </video>
+              <figcaption>Video · Análisis de puesto</figcaption>
+            </figure>
+            <figure>
+              <a href="{% static hr_campaign.image %}" target="_blank" rel="noopener" aria-label="Ver cartel en tamaño completo">
+                <img src="{% static hr_campaign.image %}" alt="Cartel: Seguimos creciendo juntos con un análisis de puesto" loading="lazy">
+              </a>
+              <figcaption>Cartel · clic para ampliar</figcaption>
+            </figure>
+          </div>
+        </article>
+
+        <div class="hr-intro">
+          <span class="section-kicker">Psicología organizacional</span>
+          <h2>Procesos de Recursos Humanos</h2>
+          <p>Selecciona un proceso para verlo en detalle.</p>
+        </div>
+        <div class="hr-chips" role="group" aria-label="Filtrar procesos de RH">
+          <button type="button" class="hr-chip" data-hr-filter="" aria-pressed="true">Todos</button>
+          {% for p in hr_processes %}
+          <button type="button" class="hr-chip" data-hr-filter="{{ p.slug }}" aria-pressed="false">{{ p.title }}</button>
+          {% endfor %}
+        </div>
+
+        <div class="hr-grid">
+          {% for p in hr_processes %}
+          <article class="hr-card hr-{{ p.slug }}" id="rh-{{ p.slug }}" data-hr-card="{{ p.slug }}">
+            <header><span class="hr-icon" aria-hidden="true">{{ p.icon }}</span><h3>{{ p.title }}</h3></header>
+            <p class="hr-summary">{{ p.summary }}</p>
+
+            {% if p.steps %}
+            <ol class="hr-steps">{% for step in p.steps %}<li>{{ step }}</li>{% endfor %}</ol>
+            {% endif %}
+
+            {% if p.rows %}
+            <dl class="hr-profile">{% for label, value in p.rows %}<div><dt>{{ label }}</dt><dd>{{ value }}</dd></div>{% endfor %}</dl>
+            {% endif %}
+
+            {% if p.criteria %}
+            <ul class="hr-bars">{% for label, weight in p.criteria %}
+              <li><span>{{ label }}</span><strong>{{ weight }}%</strong><i style="--w: {{ weight }}"></i></li>
+            {% endfor %}</ul>
+            {% endif %}
+
+            {% if p.courses %}
+            <ul class="hr-list">{% for course, audience, month in p.courses %}
+              <li><strong>{{ course }}</strong><span>{{ audience }} · {{ month }}</span></li>
+            {% endfor %}</ul>
+            {% endif %}
+
+            {% if p.checklist %}
+            <ul class="hr-checklist">{% for doc in p.checklist %}<li>{{ doc }}</li>{% endfor %}</ul>
+            {% endif %}
+
+            {% if p.vacancies %}
+            <ul class="hr-list">{% for title, area, kind in p.vacancies %}
+              <li><strong>{{ title }}</strong><span>{{ area }} · {{ kind }}</span></li>
+            {% endfor %}</ul>
+            <a class="text-link" href="{{ vacancy_url }}" target="_blank" rel="noopener noreferrer">Ver vacante <span>↗</span></a>
+            {% endif %}
+
+            {% if p.slug == "personal" %}
+            <div class="hr-kpis">
+              <div><strong>{{ stats.active }}</strong><span>activos</span></div>
+              <div><strong>{{ stats.inactive }}</strong><span>bajas</span></div>
+              <div><strong>{{ stats.full_time }}</strong><span>tiempo completo</span></div>
+              <div><strong>{{ stats.part_time }}</strong><span>medio tiempo</span></div>
+            </div>
+            <ul class="hr-bars hr-bars-area">{% for item in stats.by_area %}
+              <li><span>{{ item.area }}</span><strong>{{ item.count }}</strong><i style="--w: {{ item.pct }}"></i></li>
+            {% endfor %}</ul>
+            <a class="text-link" href="?tab=trabajadores" data-go-tab="trabajadores">Ver tabla de trabajadores <span>→</span></a>
+            {% endif %}
+
+            {% if p.note %}<p class="hr-note">{{ p.note }}</p>{% endif %}
+          </article>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer compact-footer"><div class="container footer-bottom"><span>Estudio de Danza Misalú · Área interna (demostración)</span><a href="{% url 'core:home' %}">Volver al inicio</a></div></footer>
+<script defer src="{% static 'core/js/internal.js' %}"></script>
+{% endblock %}

@@ -135,3 +135,38 @@ Se pueden cambiar con `GEMINI_MODEL` y `GEMINI_FALLBACK_MODELS`.
 ```powershell
 python manage.py test core
 ```
+
+
+## Área interna (versión 4)
+
+Nueva página `/area-interna/` (enlace **Área interna** en el menú) con dos pestañas:
+
+- **Trabajadores**: tabla del personal con buscador (ignora acentos) y filtros por puesto, área,
+  disciplina, tipo de trabajador y estatus. Se actualiza al instante; sin JavaScript también funciona
+  con el botón "Aplicar filtros". En celular la tabla se muestra como tarjetas.
+- **Recursos Humanos**: reclutamiento y selección, análisis de puestos, evaluación del desempeño,
+  capacitación, expedientes, vacantes y personal (indicadores calculados desde la tabla).
+
+Los datos están en `core/data.py` (`WORKERS`, `WORKER_FILTERS`, `HR_PROCESSES`); para agregar o cambiar
+un trabajador solo edita esa lista. Archivos: `core/templates/core/internal_area.html`,
+`core/static/core/js/internal.js` y el bloque "Área interna" al final de `styles.css`.
+
+### Acceso con cuentas de prueba (versión 5)
+
+Al entrar a **Área interna** se pide iniciar sesión. Las cuentas son inventadas y aparecen en la misma
+pantalla de acceso (clic en una para llenar el formulario):
+
+| Correo | Contraseña | Qué puede hacer |
+|---|---|---|
+| `trabajador@misalu.demo` | `trabajador123` | Ver el directorio de trabajadores. RH aparece bloqueado. |
+| `rh@misalu.demo` | `rh123` | Ver trabajadores y los procesos de RH con el video y el cartel del análisis de puesto. |
+| `admin@misalu.demo` | `admin123` | Todo lo anterior + agregar, editar y eliminar trabajadores. |
+
+- Las cuentas y los permisos por rol están en `core/data.py` (`DEMO_ACCOUNTS`, `INTERNAL_ROLES`).
+- Los trabajadores ahora viven en la base de datos (modelo `Worker`). **Después de actualizar, ejecuta
+  `python manage.py migrate`**: la migración `0002_worker` crea la tabla y carga al personal inicial.
+- Video y cartel de RH: `core/static/core/media/` y `core/static/core/img/rh/` (configurados en `HR_CAMPAIGN`).
+- Es un login de demostración para la presentación: las contraseñas están en el código y se muestran en
+  pantalla, así que no sirve para proteger información real.
+- En Render (plan gratuito) la base SQLite se reinicia en cada despliegue: los cambios hechos con la cuenta
+  admin se pierden y vuelve la lista inicial.

@@ -1,0 +1,39 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}{% if worker %}Editar{% else %}Agregar{% endif %} trabajador · Área interna | Estudio de Danza Misalú{% endblock %}
+{% block content %}
+{% include "core/_internal_header.html" %}
+<main id="contenido" class="internal-page">
+  <section class="section internal-section">
+    <div class="container worker-form-wrap">
+      <a class="text-link back-link" href="{% url 'core:internal_area' %}"><span>←</span> Volver a Trabajadores</a>
+      <div class="worker-form-card">
+        <span class="section-kicker">Administración</span>
+        <h1>{% if worker %}Editar a {{ worker.nombre }}{% else %}Agregar trabajador{% endif %}</h1>
+        <form method="post" novalidate>{% csrf_token %}
+          <div class="worker-form-grid">
+            {% for field in form %}
+            <div class="field{% if field.name == 'nombre' or field.name == 'cargo' %} field-wide{% endif %}">
+              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {{ field }}
+              {% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+            </div>
+            {% endfor %}
+          </div>
+          <div class="worker-form-actions">
+            <button class="button button-primary" type="submit">Guardar <span>✓</span></button>
+            <a class="button button-outline" href="{% url 'core:internal_area' %}">Cancelar</a>
+          </div>
+        </form>
+        {% if worker %}
+        <form method="post" action="{% url 'core:worker_delete' worker.pk %}" class="worker-delete" data-confirm="¿Eliminar a {{ worker.nombre }}? Esta acción no se puede deshacer.">{% csrf_token %}
+          <p>¿Ya no forma parte del estudio? Puedes marcarlo como <strong>Inactivo</strong> arriba o eliminarlo definitivamente.</p>
+          <button class="button button-small button-danger" type="submit">Eliminar trabajador</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+</main>
+<script defer src="{% static 'core/js/internal.js' %}"></script>
+{% endblock %}

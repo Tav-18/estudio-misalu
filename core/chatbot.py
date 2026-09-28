@@ -99,6 +99,13 @@ redes sociales y contenido digital; reconocimiento de la academia.
 ## Secciones del sitio
 Inicio, Quiénes somos, Clases, Horarios, Organización (organigrama y directorio), Galería y Contacto
 (con formulario). Hay una página aparte "/proyecto/" con información empresarial y análisis PESTEL.
+También hay una página "/area-interna/" (enlace "Área interna" en el menú): un portal interno de demostración
+que pide iniciar sesión con una cuenta de prueba (trabajador, Recursos Humanos o administración; las cuentas
+aparecen en la misma pantalla de acceso). Los trabajadores solo ven el directorio; RH ve además sus procesos
+con un video y un cartel sobre el análisis de puesto; administración puede agregar o editar trabajadores.
+Incluye la tabla de Trabajadores (buscador y filtros por puesto, área, disciplina, tipo y estatus) y los procesos
+de Recursos Humanos (reclutamiento y selección, análisis de puestos, evaluación del desempeño, capacitación,
+expedientes, vacantes y personal).
 """
 
 

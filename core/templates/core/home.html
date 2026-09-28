@@ -10,6 +10,7 @@
       <a href="#inicio">Inicio</a><a href="#quienes-somos">Quiénes somos</a><a href="#clases">Clases</a>
       <a href="#horarios">Horarios</a><a href="#organizacion">Organización</a><a href="#galeria">Galería</a><a href="#contacto">Contacto</a>
       <a class="nav-vacancy" href="{{ vacancy_url }}" target="_blank" rel="noopener noreferrer" data-scroll-target="#vacante">Vacantes</a>
+      <a class="nav-internal" href="{% url 'core:internal_area' %}">Área interna</a>
     </nav>
     <a class="button button-small button-outline desktop-cta" href="#contacto">Contáctanos</a>
   </div>
@@ -594,7 +595,7 @@
         </button>{% endfor %}
       </div></div>
     <div><h2>Explora</h2><a href="#quienes-somos">Quiénes somos</a><a href="#clases">Clases</a><a href="#organizacion">Organigrama</a><a href="#directorio">Directorio</a></div>
-    <div><h2>Proyecto académico</h2><a href="{% url 'core:project_info' %}">Información empresarial y PESTEL</a><span>Datos de contacto ficticios</span><span>Django · UX/UI responsive</span></div>
+    <div><h2>Proyecto académico</h2><a href="{% url 'core:project_info' %}">Información empresarial y PESTEL</a><a href="{% url 'core:internal_area' %}">Área interna (Trabajadores y RH)</a><span>Datos de contacto ficticios</span><span>Django · UX/UI responsive</span></div>
   </div>
   <div class="container footer-bottom"><span>© {% now "Y" %} Estudio de Danza Misalú.</span><span>Proyecto académico · Python + Django</span></div>
 </footer>

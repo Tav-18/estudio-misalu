@@ -1,0 +1,15 @@
+{% load static %}
+<header class="site-header">
+  <div class="container project-nav">
+    <a class="brand" href="{% url 'core:home' %}"><img src="{% static 'core/img/logo-misalu.png' %}" alt="Logo de Estudio de Danza Misalú"></a>
+    <div class="session-box">
+      <div class="session-user">
+        <span class="session-role role-{{ internal_user.role }}">{{ internal_user.label }}</span>
+        <span class="session-email">{{ internal_user.email }}</span>
+      </div>
+      <form method="post" action="{% url 'core:internal_logout' %}">{% csrf_token %}
+        <button class="button button-small button-outline" type="submit">Cerrar sesión</button>
+      </form>
+    </div>
+  </div>
+</header>
