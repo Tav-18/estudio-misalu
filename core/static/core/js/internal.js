@@ -97,6 +97,72 @@
         });
     });
 
+    // ---------- Recursos Humanos: explorador de expedientes ----------
+    // Sin JavaScript cada candidato es un enlace (?exp=slug); con JavaScript cambia sin recargar.
+    const explorer = document.querySelector("[data-exp-explorer]");
+    if (explorer) {
+        const links = Array.from(explorer.querySelectorAll("[data-exp-target]"));
+        const panels = explorer.querySelectorAll("[data-exp-panel]");
+        const select = (slug, focusPanel = false) => {
+            links.forEach((link) => {
+                if (link.dataset.expTarget === slug) link.setAttribute("aria-current", "true");
+                else link.removeAttribute("aria-current");
+            });
+            panels.forEach((panel) => { panel.hidden = panel.dataset.expPanel !== slug; });
+            const url = new URL(window.location);
+            url.searchParams.set("tab", "rh");
+            url.searchParams.set("exp", slug);
+            history.replaceState(null, "", url);
+            if (focusPanel) {
+                const panel = explorer.querySelector(`[data-exp-panel="${slug}"]`);
+                // En celular la lista queda arriba: lleva la vista al expediente elegido.
+                if (window.matchMedia("(max-width: 900px)").matches) {
+                    panel?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+            }
+        };
+        links.forEach((link, index) => {
+            link.addEventListener("click", (event) => {
+                event.preventDefault();
+                select(link.dataset.expTarget, true);
+            });
+            link.addEventListener("keydown", (event) => {
+                if (!["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft"].includes(event.key)) return;
+                event.preventDefault();
+                const visible = links.filter((l) => !l.closest("li").hidden);
+                const pos = visible.indexOf(link);
+                const step = event.key === "ArrowDown" || event.key === "ArrowRight" ? 1 : -1;
+                const next = visible[(pos + step + visible.length) % visible.length];
+                next?.focus();
+                if (next) select(next.dataset.expTarget);
+            });
+        });
+
+        const searchInput = explorer.querySelector("[data-exp-search]");
+        const emptyMsg = explorer.querySelector("[data-exp-empty]");
+        searchInput?.addEventListener("input", () => {
+            const needle = normalize(searchInput.value.trim());
+            let shown = 0;
+            explorer.querySelectorAll("[data-exp-item]").forEach((item) => {
+                const match = !needle || normalize(item.dataset.search).includes(needle);
+                item.hidden = !match;
+                if (match) shown += 1;
+            });
+            if (emptyMsg) emptyMsg.hidden = shown > 0;
+        });
+    }
+
+    // Sub-navegación de RH: desplazamiento suave respetando "reducir movimiento".
+    document.querySelectorAll('.rh-subnav a[href^="#"], a[href="#expedientes"]').forEach((link) => {
+        link.addEventListener("click", (event) => {
+            const target = document.querySelector(link.getAttribute("href"));
+            if (!target) return;
+            event.preventDefault();
+            const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+        });
+    });
+
     // ---------- Login: mostrar u ocultar la contraseña ----------
     const passwordInput = document.querySelector('.login-form input[name="password"]');
     document.querySelector("[data-password-toggle]")?.addEventListener("click", (event) => {

@@ -1,19 +1,21 @@
 import json
+import mimetypes
 import unicodedata
 from collections import Counter
 from functools import wraps
 
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import FileResponse, Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 
+from .documents import expedientes_summary, list_expedientes, manual_documents, resolve_document
 from .chatbot import ChatbotError, ask_gemini, is_rate_limited, local_answer
 from .data import (
-    CLASSES, DEMO_ACCOUNTS, DEMO_CONTACT, GALLERY, HR_CAMPAIGN, HR_PROCESSES, INTERNAL_ROLES,
+    CLASSES, DEMO_ACCOUNTS, DEMO_CONTACT, GALLERY, HR_MANUAL, HR_CAMPAIGN, HR_PROCESSES, INTERNAL_ROLES,
     PESTEL, SCHEDULE, SOCIAL_NETWORKS, VACANCY_CAMPAIGN, VACANCY_URL, VALUES, WORKER_FILTERS,
 )
 from .forms import ContactMessageForm, InternalLoginForm, WorkerForm
@@ -158,6 +160,10 @@ def internal_area(request):
 
     filters = [{**f, "selected": selected[f["key"]]} for f in WORKER_FILTERS]
     tab = "rh" if request.GET.get("tab") == "rh" else "trabajadores"
+    expedientes = list_expedientes() if user["can_view_rh"] else []
+    selected_exp = request.GET.get("exp", "")
+    if expedientes and selected_exp not in {e["slug"] for e in expedientes}:
+        selected_exp = expedientes[0]["slug"]
     context = _common_context()
     context.update({
         "internal_user": user,
@@ -169,6 +175,11 @@ def internal_area(request):
         "hr_campaign": HR_CAMPAIGN if user["can_view_rh"] else None,
         "vacancy_campaign": VACANCY_CAMPAIGN,
         "stats": _personal_stats(workers),
+        "expedientes": expedientes,
+        "expedientes_summary": expedientes_summary(expedientes),
+        "selected_exp": selected_exp,
+        "manual_docs": manual_documents() if user["can_view_rh"] else [],
+        "hr_manual": HR_MANUAL if user["can_view_rh"] else None,
         "active_tab": tab,
     })
     return render(request, "core/internal_area.html", context)
@@ -195,6 +206,21 @@ def worker_delete(request, pk):
     messages.success(request, f"Trabajador eliminado: {worker.nombre}.")
     worker.delete()
     return redirect("core:internal_area")
+
+
+@internal_required("can_view_rh")
+def rh_document(request, path):
+    """Entrega un documento de RH (expedientes o manual) solo a cuentas con acceso a RH."""
+    target = resolve_document(path)
+    if target is None:
+        raise Http404("Documento no encontrado.")
+    inline = request.GET.get("descargar") is None
+    content_type = mimetypes.guess_type(target.name)[0] or "application/octet-stream"
+    response = FileResponse(open(target, "rb"), as_attachment=not inline, filename=target.name,
+                            content_type=content_type)
+    response["X-Robots-Tag"] = "noindex, nofollow"
+    response["Cache-Control"] = "private, no-store"
+    return response
 
 
 def _clean_history(raw_history):

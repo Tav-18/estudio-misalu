@@ -215,6 +215,23 @@ DEMO_ACCOUNTS = [
     {"email": "admin@estudiomisalu.mx", "password": "Admin2026", "role": "admin", "name": "Sara Romero"},
 ]
 
+# Ficha del Manual de políticas que se muestra en la pestaña "Recursos Humanos".
+# El archivo en sí está en documentos_rh/manual/.
+HR_MANUAL = {
+    "title": "Manual de Políticas y Procedimientos",
+    "subtitle": "Reclutamiento y selección de personal",
+    "summary": ("Establece las políticas y los procedimientos estandarizados para cubrir las vacantes del estudio "
+                "con base en el perfil del puesto, las competencias requeridas y criterios objetivos."),
+    "facts": [("Código", "RH-MP-001"), ("Versión", "1.0"), ("Área", "Recursos Humanos / Capital Humano"),
+              ("Emisión", "15/11/2026"), ("Vigencia", "15/11/2027")],
+    "people": [("Elaboró", "Alondra Laguna y Nancy Rodríguez"), ("Revisó", "Iván Bello"), ("Autorizó", "Sara Romero")],
+    "contents": ["Objetivo", "Alcance", "Marco normativo", "Definiciones", "Responsabilidades por área",
+                 "Políticas generales", "Procedimiento de reclutamiento y selección",
+                 "Procedimiento de contratación e ingreso", "Diagrama general del proceso",
+                 "Registros y control documental", "Confidencialidad y protección de datos",
+                 "Revisión y actualización del manual"],
+}
+
 # Material de la campaña de RH que se muestra en la pestaña "Recursos Humanos".
 HR_CAMPAIGN = {
     "title": "Seguimos creciendo juntos",

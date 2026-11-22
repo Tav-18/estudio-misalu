@@ -12,5 +12,6 @@ urlpatterns = [
     path("area-interna/trabajadores/nuevo/", views.worker_form, name="worker_create"),
     path("area-interna/trabajadores/<int:pk>/editar/", views.worker_form, name="worker_edit"),
     path("area-interna/trabajadores/<int:pk>/eliminar/", views.worker_delete, name="worker_delete"),
+    path("area-interna/documentos/<path:path>", views.rh_document, name="rh_document"),
     path("api/chat/", views.chat_api, name="chat_api"),
 ]

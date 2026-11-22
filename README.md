@@ -170,3 +170,19 @@ entregan al personal:
 - Las contraseñas están escritas en el código: sirve para presentar el portal, no para proteger información real.
 - En Render (plan gratuito) la base SQLite se reinicia en cada despliegue: los cambios hechos con la cuenta
   admin se pierden y vuelve la lista inicial.
+
+### Expedientes y Manual de políticas (versión 6)
+
+En la pestaña **Recursos Humanos** (solo cuentas de RH y Administración) hay una sub-navegación
+(Procesos · Expedientes · Manual de políticas) y dos secciones nuevas:
+
+- **Expedientes de candidatos**: indicadores generales, lista de candidatos con buscador y avance, y el
+  detalle de cada expediente con requisitos entregados o pendientes y los documentos por categoría
+  (Documentos de ingreso, Pruebas psicométricas, Pruebas proyectivas, Reportes).
+- **Manual de políticas**: ficha del manual (código, versión, vigencia, contenido) con botones para
+  consultarlo y descargarlo. Los datos de la ficha están en `HR_MANUAL` (`core/data.py`).
+
+Los archivos están en `documentos_rh/` (reglas en `documentos_rh/LEEME.md`) y se sirven con
+`/area-interna/documentos/...`, que exige sesión de RH o Administración.
+Código: `core/documents.py`, vista `rh_document`, `_rh_doc.html`, el explorador en `internal.js` y el
+bloque "RH: sub-navegación, expedientes y manual" al final de `styles.css`.

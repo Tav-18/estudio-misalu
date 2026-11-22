@@ -1,0 +1,22 @@
+<li class="rh-doc">
+  <span class="rh-doc-ext rh-ext-{{ f.ext }}" aria-hidden="true">{{ f.ext|upper }}</span>
+  <div class="rh-doc-body">
+    <a class="rh-doc-name" href="{% url 'core:rh_document' f.path %}"{% if f.inline %} target="_blank" rel="noopener"{% endif %}>{{ f.name }}</a>
+    <span class="rh-doc-meta">{{ f.kind }} · {{ f.size }}</span>
+  </div>
+  <div class="rh-doc-actions">
+    {% if f.inline %}
+    <a class="rh-doc-btn" href="{% url 'core:rh_document' f.path %}" target="_blank" rel="noopener" title="Abrir en otra pestaña">
+      <span aria-hidden="true">👁</span><span class="rh-doc-btn-text">Ver</span><span class="visually-hidden"> {{ f.name }} (se abre en otra pestaña)</span>
+    </a>
+    {% endif %}
+    <a class="rh-doc-btn" href="{% url 'core:rh_document' f.path %}?descargar=1" title="Descargar {{ f.kind }}">
+      <span aria-hidden="true">⤓</span><span class="rh-doc-btn-text">{{ f.ext|upper }}</span><span class="visually-hidden"> Descargar {{ f.name }} en {{ f.kind }}</span>
+    </a>
+    {% if f.original %}
+    <a class="rh-doc-btn rh-doc-btn-alt" href="{% url 'core:rh_document' f.original.path %}?descargar=1" title="Descargar original en {{ f.original.kind }}">
+      <span aria-hidden="true">⤓</span><span class="rh-doc-btn-text">{{ f.original.ext|upper }}</span><span class="visually-hidden"> Descargar {{ f.name }} en {{ f.original.kind }}</span>
+    </a>
+    {% endif %}
+  </div>
+</li>

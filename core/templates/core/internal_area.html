@@ -123,6 +123,11 @@
           <a class="text-link" href="?tab=trabajadores" data-go-tab="trabajadores">Ir a Trabajadores <span>→</span></a>
         </div>
         {% else %}
+        <nav class="rh-subnav" aria-label="Secciones de Recursos Humanos">
+          <a href="#procesos-rh">Procesos</a>
+          <a href="#expedientes">Expedientes <span>{{ expedientes|length }}</span></a>
+          <a href="#manual-politicas">Manual de políticas</a>
+        </nav>
         <article class="hr-campaign">
           <div class="hr-campaign-copy">
             <span class="section-kicker">Comunicado al equipo</span>
@@ -149,7 +154,7 @@
           </div>
         </article>
 
-        <div class="hr-intro">
+        <div class="hr-intro" id="procesos-rh">
           <span class="section-kicker">Psicología organizacional</span>
           <h2>Procesos de Recursos Humanos</h2>
           <p>Selecciona un proceso para verlo en detalle.</p>
@@ -191,6 +196,10 @@
             <ul class="hr-checklist">{% for doc in p.checklist %}<li>{{ doc }}</li>{% endfor %}</ul>
             {% endif %}
 
+            {% if p.slug == "expedientes" %}
+            <a class="text-link" href="#expedientes">Consultar expedientes ({{ expedientes|length }}) <span>↓</span></a>
+            {% endif %}
+
             {% if p.vacancies %}
             <ul class="hr-list">{% for title, area, kind in p.vacancies %}
               <li><strong>{{ title }}</strong><span>{{ area }} · {{ kind }}</span></li>
@@ -215,6 +224,132 @@
           </article>
           {% endfor %}
         </div>
+
+        <!-- ===== EXPEDIENTES (documentos_rh/expedientes/) ===== -->
+        <section class="rh-docs" id="expedientes" aria-labelledby="expedientes-title">
+          <header class="rh-docs-head">
+            <div class="hr-intro">
+              <span class="section-kicker">Reclutamiento y selección</span>
+              <h2 id="expedientes-title">Expedientes de candidatos</h2>
+              <p>Documentos de ingreso, pruebas aplicadas y reportes de cada candidato, organizados por categoría.</p>
+            </div>
+            {% if expedientes %}
+            <dl class="rh-kpis">
+              <div><dt>Expedientes</dt><dd>{{ expedientes_summary.count }}</dd></div>
+              <div><dt>Documentos</dt><dd>{{ expedientes_summary.documents }}</dd></div>
+            </dl>
+            {% endif %}
+          </header>
+
+          {% if expedientes %}
+          <div class="rh-explorer" data-exp-explorer>
+            <nav class="rh-exp-list" aria-label="Lista de expedientes">
+              <label class="rh-exp-search">
+                <span class="visually-hidden">Buscar expediente</span>
+                <span aria-hidden="true">⌕</span>
+                <input type="search" placeholder="Buscar candidato…" autocomplete="off" data-exp-search>
+              </label>
+              <ul>
+                {% for exp in expedientes %}
+                <li data-exp-item data-search="{{ exp.name|lower }}">
+                  <a class="rh-exp-link" href="?tab=rh&amp;exp={{ exp.slug }}#expedientes" data-exp-target="{{ exp.slug }}"
+                     {% if exp.slug == selected_exp %}aria-current="true"{% endif %}>
+                    <span class="rh-avatar" aria-hidden="true">{{ exp.initials }}</span>
+                    <span class="rh-exp-link-body">
+                      <strong>{{ exp.name }}</strong>
+                      <small>{{ exp.total }} documento{{ exp.total|pluralize }} · {{ exp.categories|length }} categoría{{ exp.categories|length|pluralize }}</small>
+                    </span>
+                    <span class="rh-exp-arrow" aria-hidden="true">›</span>
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+              <p class="rh-doc-empty" data-exp-empty hidden>Ningún expediente coincide.</p>
+            </nav>
+
+            <div class="rh-exp-detail">
+              {% for exp in expedientes %}
+              <article class="rh-exp" id="exp-{{ exp.slug }}" data-exp-panel="{{ exp.slug }}" aria-labelledby="exp-title-{{ exp.slug }}"
+                       {% if exp.slug != selected_exp %}hidden{% endif %}>
+                <header class="rh-exp-head">
+                  <span class="rh-avatar rh-avatar-lg" aria-hidden="true">{{ exp.initials }}</span>
+                  <div>
+                    <span class="rh-exp-kicker">Expediente de candidato</span>
+                    <h3 id="exp-title-{{ exp.slug }}">{{ exp.name }}</h3>
+                    <p>{{ exp.total }} documento{{ exp.total|pluralize }} en {{ exp.categories|length }} categoría{{ exp.categories|length|pluralize }}</p>
+                  </div>
+                  <div class="rh-exp-total"><strong>{{ exp.total }}</strong><span>documento{{ exp.total|pluralize }}</span></div>
+                </header>
+
+                <ul class="rh-checks" aria-label="Contenido del expediente">
+                  {% for cat in exp.categories %}
+                  <li><span aria-hidden="true">{{ cat.icon }}</span>{{ cat.name }} · {{ cat.files|length }}</li>
+                  {% endfor %}
+                </ul>
+
+                {% for cat in exp.categories %}
+                <section class="rh-cat" aria-label="{{ cat.name }}">
+                  <h4><span class="rh-cat-icon" aria-hidden="true">{{ cat.icon }}</span>{{ cat.name }}<span class="rh-cat-count">{{ cat.files|length }}</span></h4>
+                  {% if cat.hint %}<p class="rh-cat-hint">{{ cat.hint }}</p>{% endif %}
+                  <ul class="rh-doc-list">
+                    {% for f in cat.files %}{% include "core/_rh_doc.html" %}{% endfor %}
+                  </ul>
+                </section>
+                {% empty %}
+                <p class="rh-doc-empty">Este expediente aún no tiene documentos.</p>
+                {% endfor %}
+              </article>
+              {% endfor %}
+            </div>
+          </div>
+          {% else %}
+          <p class="rh-doc-empty rh-doc-empty-box">Aún no hay expedientes registrados.</p>
+          {% endif %}
+        </section>
+
+        <!-- ===== MANUAL DE POLÍTICAS (documentos_rh/manual/) ===== -->
+        <section class="rh-docs" id="manual-politicas" aria-labelledby="manual-title">
+          <div class="hr-intro">
+            <span class="section-kicker">Normatividad interna</span>
+            <h2 id="manual-title">Manual de políticas</h2>
+          </div>
+          {% if manual_docs %}
+          {% with doc=manual_docs.0 %}
+          <article class="rh-manual">
+            <div class="rh-manual-cover" aria-hidden="true">
+              <span class="rh-manual-code">{% for label, value in hr_manual.facts %}{% if label == "Código" %}{{ value }}{% endif %}{% endfor %}</span>
+              <strong>Manual de Políticas y Procedimientos</strong>
+              <span>Estudio de Danza Misalú</span>
+            </div>
+            <div class="rh-manual-body">
+              <h3>{{ hr_manual.title }}</h3>
+              <p class="rh-manual-sub">{{ hr_manual.subtitle }}</p>
+              <p>{{ hr_manual.summary }}</p>
+              <dl class="rh-manual-facts">
+                {% for label, value in hr_manual.facts %}<div><dt>{{ label }}</dt><dd>{{ value }}</dd></div>{% endfor %}
+              </dl>
+              <div class="rh-manual-actions">
+                <a class="button button-small button-primary" href="{% url 'core:rh_document' doc.path %}"{% if doc.inline %} target="_blank" rel="noopener"{% endif %}>Consultar manual <span aria-hidden="true">↗</span></a>
+                <a class="button button-small button-outline" href="{% url 'core:rh_document' doc.path %}?descargar=1">Descargar {{ doc.ext|upper }} · {{ doc.size }}</a>
+                {% if doc.original %}<a class="button button-small button-outline" href="{% url 'core:rh_document' doc.original.path %}?descargar=1">Original {{ doc.original.kind }}</a>{% endif %}
+              </div>
+              <details class="rh-manual-toc">
+                <summary>Contenido del manual ({{ hr_manual.contents|length }} apartados)</summary>
+                <ol>{% for item in hr_manual.contents %}<li>{{ item }}</li>{% endfor %}</ol>
+              </details>
+              <p class="rh-manual-people">{% for label, value in hr_manual.people %}<span><strong>{{ label }}:</strong> {{ value }}</span>{% endfor %}</p>
+            </div>
+          </article>
+          {% endwith %}
+          {% if manual_docs|length > 1 %}
+          <ul class="rh-doc-list rh-manual-extra">
+            {% for f in manual_docs|slice:"1:" %}{% include "core/_rh_doc.html" %}{% endfor %}
+          </ul>
+          {% endif %}
+          {% else %}
+          <p class="rh-doc-empty rh-doc-empty-box">El manual de políticas estará disponible próximamente.</p>
+          {% endif %}
+        </section>
         {% endif %}
       </div>
     </div>
